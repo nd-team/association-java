@@ -48,7 +48,6 @@ public class DriverAct {
     @PostMapping("apply")
     public Result apply(DriverTO to, HttpServletRequest request) throws ActException {
         try {
-            String userId = UserUtil.currentUserID();
             String path =FileUtil.getModulePath("driver",true);
             List<File> files = FileUtil.save(request, path);
             Boolean rs = driverSer.apply(to, files);

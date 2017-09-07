@@ -137,7 +137,6 @@ public class ChatSerImpl implements ChatSer {
             session = client.getSession();
             if (session.isOpen()) {
                 try {
-                    System.out.println("send:---"+JSON.toJSONString(msg));
                     msg.setRead(true);
                     session.getBasicRemote().sendText(JSON.toJSONString(msg));
                     msgSer.save(msg);

@@ -14,11 +14,17 @@ public class UserCommon {
     public static final String LOGIN_USER = "loginUser";
 
     public static final String TOKEN = "token";
+    public static final String EXPERIENCE = "experience";
 
 
     /**
-     * redis登录失效时间 3天
+     * redis登录失效时间 30天
      */
     public static final Integer LOGIN_TIMEOUT = 30*60 * 60 * 24;
+
+    /**
+     * 经验缓存失效2天
+     */
+    public static final Integer EXP_TIMEOUT = 2*60 * 60 * 24;
 
 }

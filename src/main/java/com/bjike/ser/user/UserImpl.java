@@ -97,7 +97,6 @@ public class UserImpl extends ServiceImpl<User, UserDTO> implements UserSer {
         UserDTO dto = new UserDTO();
         dto.getConditions().add(Restrict.eq("phone", account));
         dto.getConditions().add(Restrict.or("number", account));
-        dto.getConditions().add(Restrict.or("nickname", account));
         return super.findByCis(dto);
     }
 

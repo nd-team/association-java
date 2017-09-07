@@ -25,4 +25,15 @@ public interface UserInfoSer extends Ser<UserInfo, UserInfoDTO> {
     default UserInfo findByUserId(String userId) throws SerException {
         return null;
     }
+
+    /**
+     * 添加经验值
+     * @param experience 经验值
+     * @return
+     * @throws SerException
+     */
+    default Boolean addExperience(double experience) throws SerException {
+        return null;
+    }
+
 }
