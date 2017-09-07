@@ -72,5 +72,11 @@ dependencies {
     // poi
     compile group: 'org.apache.poi', name: 'poi', version: "$poi_version"
     compile group: 'org.apache.poi', name: 'poi-ooxml', version: "$poi_version"
+    compile(group: 'org.apache.kafka', name: 'kafka_2.10', version: '0.10.2.0') {
+        exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+    }
+    compile(group: 'org.apache.commons', name: 'commons-email', version: '1.4') {
+        exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+    }
 }
 

@@ -18,6 +18,7 @@ import com.bjike.to.user.UserInfoTO;
 import com.bjike.to.user.VIPApplyTO;
 import com.bjike.type.user.UserType;
 import com.bjike.vo.user.UserInfoVO;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -98,6 +99,54 @@ public class UserImpl extends ServiceImpl<User, UserDTO> implements UserSer {
         dto.getConditions().add(Restrict.eq("phone", account));
         dto.getConditions().add(Restrict.or("number", account));
         return super.findByCis(dto);
+    }
+
+    @Override
+    public User findByIdOrMail(String cond) throws SerException {
+        UserDTO dto = new UserDTO();
+        dto.getConditions().add(Restrict.eq("email", cond));
+        dto.getConditions().add(Restrict.or("id", cond));
+        return super.findOne(dto);
+    }
+
+    public String[] findIdByMail(String[] mails) throws SerException {
+        String sql = null;
+        if (null != mails) {
+            String str_mails = StringUtils.join(mails, "','");
+            str_mails = "'" + str_mails + "'";
+            sql = "select id form user where email in(" + str_mails + ") and status=0 ";
+        } else {
+            sql = "select id form user where email is not null and status=0";
+        }
+        List<Object> emails = super.findBySql(sql);
+        String[] rs = null;
+        if (null != emails) {
+            rs = new String[emails.size()];
+            emails.toArray(rs);
+        } else {
+            rs = new String[0];
+        }
+        return rs;
+    }
+
+    public String[] findMailById(String[] ids) throws SerException {
+        String sql = null;
+        if (null != ids) {
+            String str_ids = StringUtils.join(ids, "','");
+            str_ids = "'" + str_ids + "'";
+            sql = "select email form user where id in(" + str_ids + ") and email is not null and status=0";
+        } else {
+            sql = "select email form user where email is not null and status=0";
+        }
+        List<Object> emails = super.findBySql(sql);
+        String[] rs = null;
+        if (null != emails) {
+            rs = new String[emails.size()];
+            emails.toArray(rs);
+        } else {
+            rs = new String[0];
+        }
+        return rs;
     }
 
     @Override

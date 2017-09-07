@@ -13,7 +13,7 @@ import com.bjike.ser.chat.ChatSer;
 import com.bjike.session.AudioClientSession;
 import com.bjike.session.AudioSession;
 import com.bjike.session.ChatSession;
-import com.bjike.type.chat.MsgType;
+import com.bjike.type.msg.MsgType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

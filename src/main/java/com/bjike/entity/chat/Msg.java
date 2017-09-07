@@ -2,7 +2,7 @@ package com.bjike.entity.chat;
 
 import com.bjike.entity.BaseEntity;
 import com.bjike.type.chat.MsgCategory;
-import com.bjike.type.chat.MsgType;
+import com.bjike.type.msg.MsgType;
 
 /**
  * 消息

@@ -1,10 +1,10 @@
-package com.bjike.type.chat;
+package com.bjike.type.msg;
 
 /**
  * 消息类型
  *
  * @Author: [liguiqin]
- * @Date: [2017-07-19 14:38]
+ * @Date: [2017-03-14 10:48]
  * @Description: [ ]
  * @Version: [1.0.0]
  * @Copy: [com.bjike]
@@ -29,7 +29,11 @@ public enum MsgType {
     /**
      * 下线通知
      */
-    OFFLINE(4),;
+    OFFLINE(4),
+    /**
+     * 加好友通知
+     */
+    FRIEND(5),;
     private int code;
 
     MsgType(int code) {
@@ -37,6 +41,6 @@ public enum MsgType {
     }
 
     public int getCode() {
-        return code;
+        return this.code;
     }
 }

@@ -1,0 +1,149 @@
+package com.bjike.act.msg;
+
+
+import com.bjike.common.aspect.ADD;
+import com.bjike.common.aspect.EDIT;
+import com.bjike.common.exception.ActException;
+import com.bjike.common.exception.SerException;
+import com.bjike.common.interceptor.login.LoginAuth;
+import com.bjike.common.restful.ActResult;
+import com.bjike.common.restful.Result;
+import com.bjike.common.util.bean.BeanCopy;
+import com.bjike.dto.msg.MessageDTO;
+import com.bjike.entity.msg.Message;
+import com.bjike.ser.msg.MessageSer;
+import com.bjike.to.msg.MessageTO;
+import com.bjike.type.msg.MsgType;
+import com.bjike.vo.msg.MessageVO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+
+/**
+ * 消息功能操作
+ *
+ * @Author: [liguiqin]
+ * @Date: [2017-03-15 14:26]
+ * @Description: [消息推送]
+ * @Version: [1.0.0]
+ * @Copy: [com.bjike]
+ */
+@RestController
+@RequestMapping("msg")
+@LoginAuth
+public class MessageAct {
+    @Autowired
+    private MessageSer messageSer;
+
+    /**
+     * 发送消息
+     *
+     * @param messageTO 消息体
+     * @throws ActException
+     * @version v1
+     */
+    @PostMapping("v1/send")
+    public Result send(@Validated(ADD.class) MessageTO messageTO, BindingResult result) throws ActException {
+        try {
+            messageSer.send(messageTO);
+            return new ActResult("send message success!");
+        } catch (SerException e) {
+            throw new ActException(e.getMessage());
+        }
+    }
+
+    /**
+     * 读取消息
+     *
+     * @param id 消息id
+     * @throws ActException
+     * @version v1
+     */
+    @GetMapping("v1/{id}/read")
+    public Result read(@PathVariable String id) throws ActException {
+        try {
+            messageSer.read(id);
+            return ActResult.initialize("read success");
+        } catch (SerException e) {
+            throw new ActException(e.getMessage());
+        }
+    }
+
+    /**
+     * 读取消息列表
+     *
+     * @param msgType 消息类型
+     * @throws ActException
+     * @version v1
+     */
+    @GetMapping("v1/list/messages")
+    public Result messages(MsgType msgType, HttpServletRequest request) throws ActException {
+        try {
+            MessageDTO dto = new MessageDTO();
+            dto.setMsgType(msgType);
+            List<Message> messages = messageSer.list(dto);
+            List<MessageVO> vos = BeanCopy.copyProperties(messages, MessageVO.class, request);
+            return ActResult.initialize(vos);
+        } catch (SerException e) {
+            throw new ActException(e.getMessage());
+        }
+    }
+
+    /**
+     * 未读消息
+     *
+     * @param id 用户id
+     * @throws ActException
+     * @version v1
+     */
+    @GetMapping("v1/list/unread/messages")
+    public Result unreadMessages(@PathVariable String id, MsgType msgType, HttpServletRequest request) throws ActException {
+        try {
+            List<Message> messages = messageSer.unreadList(id, msgType);
+            List<MessageVO> vos = BeanCopy.copyProperties(messages, MessageVO.class, request);
+            return ActResult.initialize(vos);
+        } catch (SerException e) {
+            throw new ActException(e.getMessage());
+        }
+    }
+
+    /**
+     * 消息修改
+     *
+     * @param messageTO 消息体
+     * @throws ActException
+     * @version v1
+     */
+    @PutMapping("v1/edit")
+    public Result edit(@Validated(EDIT.class) MessageTO messageTO, BindingResult result) throws ActException {
+        try {
+            messageSer.edit(messageTO);
+            return new ActResult("edit success");
+        } catch (SerException e) {
+            throw new ActException(e.getMessage());
+        }
+    }
+
+    /**
+     * 消息删除
+     *
+     * @param id 消息id
+     * @throws ActException
+     * @version v1
+     */
+    @DeleteMapping("v1/delete/{id}")
+    public Result delete(@PathVariable String id) throws ActException {
+        try {
+            messageSer.remove(id);
+            return new ActResult("delete  success");
+        } catch (SerException e) {
+            throw new ActException(e.getMessage());
+        }
+    }
+
+
+}

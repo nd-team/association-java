@@ -56,7 +56,7 @@ public class User extends BaseEntity {
     /**
      * 邮箱
      */
-    @Column(columnDefinition = "VARCHAR(256) COMMENT '邮箱' ")
+    @Column(columnDefinition = "VARCHAR(256) COMMENT '邮箱' ",unique = true)
     @Email
     private String email;
     /**

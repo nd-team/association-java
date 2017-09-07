@@ -6,7 +6,7 @@ import com.bjike.entity.chat.Client;
 import com.bjike.entity.chat.Msg;
 import com.bjike.ser.chat.ChatSer;
 import com.bjike.session.ChatSession;
-import com.bjike.type.chat.MsgType;
+import com.bjike.type.msg.MsgType;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
