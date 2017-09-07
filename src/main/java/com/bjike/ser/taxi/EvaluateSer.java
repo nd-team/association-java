@@ -30,4 +30,16 @@ public interface EvaluateSer extends Ser<Evaluate, EvaluateDTO> {
         return null;
 
     }
+
+    /**
+     *
+     * @param orderId 订单id
+     * @param content 未完成原因
+     * @return
+     * @throws SerException
+     */
+    default Boolean unfinished(String orderId, String content) throws SerException {
+        return null;
+
+    }
 }

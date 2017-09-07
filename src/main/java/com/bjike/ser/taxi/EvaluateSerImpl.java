@@ -10,6 +10,7 @@ import com.bjike.entity.taxi.EvaluatePicture;
 import com.bjike.entity.taxi.TaxiOrder;
 import com.bjike.ser.ServiceImpl;
 import com.bjike.to.taxi.EvaluateTO;
+import com.bjike.type.taxi.OrderStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,6 +45,7 @@ public class EvaluateSerImpl extends ServiceImpl<Evaluate, EvaluateDTO> implemen
         if (null != taxiOrder) {
             evaluate.setReviewer(taxiOrder.getUser());
             evaluate.setUser(UserUtil.currentUser(false));
+            evaluate.setTaxiOrder(taxiOrder);
             super.save(evaluate);
             List<EvaluatePicture> evaluatePictures = new ArrayList<>(files.size());
             for (File file : files) {
@@ -63,6 +65,24 @@ public class EvaluateSerImpl extends ServiceImpl<Evaluate, EvaluateDTO> implemen
             throw new SerException("该订单不存在");
         }
 
+        return true;
+    }
+
+    @Override
+    public Boolean unfinished(String orderId, String content) throws SerException {
+       TaxiOrder taxiOrder =  taxiOrderSer.findById(orderId);
+       if(null!=taxiOrder){
+           Evaluate evaluate =new Evaluate();
+           evaluate.setReviewer(taxiOrder.getUser());
+           evaluate.setUser(UserUtil.currentUser(false));
+           evaluate.setContent(content);
+           evaluate.setTaxiOrder(taxiOrder);
+           super.save(evaluate);
+           taxiOrder.setStatus(OrderStatus.UNFINISHED);
+           taxiOrderSer.update(taxiOrder);
+       }else {
+           throw new SerException("该订单不存在");
+       }
         return true;
     }
 }

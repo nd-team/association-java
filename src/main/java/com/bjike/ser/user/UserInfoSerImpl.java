@@ -46,16 +46,16 @@ public class UserInfoSerImpl extends ServiceImpl<UserInfo, UserInfoDTO> implemen
     @Override
     public Boolean addExperience(double experience) throws SerException {
         String userId = UserUtil.currentUserID();
-        String now = LocalDate.now().toString();
-        UserInfo info = findByUserId(userId);
         String str_exp = redis.getMap(UserCommon.EXPERIENCE, userId);
         Exp exp = null;
         if (StringUtils.isNotBlank(str_exp)) {
             exp = JSON.parseObject(str_exp, Exp.class);
+            String now = LocalDate.now().toString();
             if (exp.getToday().equals(now)) {
                 if (exp.getExp() <= MAX_EXP) { //今天还没有到15
-                    double sum = (exp.getExp() + experience);
+                    double sum = exp.getExp() + experience ;
                     double new_exp = sum >= MAX_EXP ? sum - MAX_EXP : experience;
+                    UserInfo info = findByUserId(userId);
                     info.setExperience(new_exp + info.getExperience()); //数据库更新
                     update(info);
                     exp.setExp(exp.getExp() + experience);

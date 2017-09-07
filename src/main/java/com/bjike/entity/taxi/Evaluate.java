@@ -48,7 +48,7 @@ public class Evaluate extends BaseEntity {
     /**
      * 评分
      */
-    @Column(name = "status", columnDefinition = "TINYINT(1) DEFAULT 0 COMMENT '评分' ", nullable = false)
+    @Column(name = "status", columnDefinition = "TINYINT(1) DEFAULT 0 COMMENT '评分' ")
     private ScoreType scoreType;
 
     public User getReviewer() {

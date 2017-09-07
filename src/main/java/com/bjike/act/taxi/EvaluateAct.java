@@ -12,6 +12,7 @@ import com.bjike.to.taxi.EvaluateTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -49,6 +50,17 @@ public class EvaluateAct {
             String path = FileUtil.getModulePath("evaluate");
             List<File> files = FileUtil.save(request,path);
             Boolean rs = evaluateSer.add(to,files);
+            return ActResult.initialize(rs);
+
+        } catch (SerException e) {
+            throw new ActException(e.getMessage());
+        }
+    }
+
+    @PostMapping("unfinished/{orderId}")
+    public Result unfinished(@PathVariable String orderId,String content) throws ActException {
+        try {
+            Boolean rs = evaluateSer.unfinished(orderId,content);
             return ActResult.initialize(rs);
 
         } catch (SerException e) {
