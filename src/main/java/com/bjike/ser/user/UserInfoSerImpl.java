@@ -54,10 +54,11 @@ public class UserInfoSerImpl extends ServiceImpl<UserInfo, UserInfoDTO> implemen
             exp = JSON.parseObject(str_exp, Exp.class);
             if (exp.getToday().equals(now)) {
                 if (exp.getExp() <= MAX_EXP) { //今天还没有到15
-                    double new_exp = (exp.getExp() + experience) >= MAX_EXP ? MAX_EXP : (exp.getExp() + experience); //今天已满15
-                    info.setExperience(new_exp + info.getExperience());
+                    double sum = (exp.getExp() + experience);
+                    double new_exp = sum >= MAX_EXP ? sum - MAX_EXP : experience;
+                    info.setExperience(new_exp + info.getExperience()); //数据库更新
                     update(info);
-                    exp.setExp(new_exp);
+                    exp.setExp(exp.getExp() + experience);
                     redis.appendToMap(UserCommon.EXPERIENCE, userId, JSON.toJSONString(exp), UserCommon.EXP_TIMEOUT);
                 }
             } else { //非今天,添加新的
