@@ -40,17 +40,33 @@ public class MessageAct {
     private MessageSer messageSer;
 
     /**
-     * 发送消息
+     * 发送邮件
      *
      * @param messageTO 消息体
      * @throws ActException
      * @version v1
      */
-    @PostMapping("v1/send")
+    @PostMapping("send/mail")
     public Result send(@Validated(ADD.class) MessageTO messageTO, BindingResult result) throws ActException {
         try {
-            messageSer.send(messageTO);
+            messageSer.sendMail(messageTO);
             return new ActResult("send message success!");
+        } catch (SerException e) {
+            throw new ActException(e.getMessage());
+        }
+    }
+    /**
+     * 推送消息
+     *
+     * @param messageTO 消息体
+     * @throws ActException
+     * @version v1
+     */
+    @PostMapping("push")
+    public Result push(@Validated(ADD.class) MessageTO messageTO, BindingResult result) throws ActException {
+        try {
+            messageSer.pushMsg(messageTO);
+            return new ActResult("push message success!");
         } catch (SerException e) {
             throw new ActException(e.getMessage());
         }
@@ -63,7 +79,7 @@ public class MessageAct {
      * @throws ActException
      * @version v1
      */
-    @GetMapping("v1/{id}/read")
+    @GetMapping("read/{id}")
     public Result read(@PathVariable String id) throws ActException {
         try {
             messageSer.read(id);
@@ -80,7 +96,7 @@ public class MessageAct {
      * @throws ActException
      * @version v1
      */
-    @GetMapping("v1/list/messages")
+    @GetMapping("list")
     public Result messages(MsgType msgType, HttpServletRequest request) throws ActException {
         try {
             MessageDTO dto = new MessageDTO();
@@ -100,7 +116,7 @@ public class MessageAct {
      * @throws ActException
      * @version v1
      */
-    @GetMapping("v1/list/unread/messages")
+    @GetMapping("list/unread")
     public Result unreadMessages(@PathVariable String id, MsgType msgType, HttpServletRequest request) throws ActException {
         try {
             List<Message> messages = messageSer.unreadList(id, msgType);
@@ -118,7 +134,7 @@ public class MessageAct {
      * @throws ActException
      * @version v1
      */
-    @PutMapping("v1/edit")
+    @PutMapping("edit")
     public Result edit(@Validated(EDIT.class) MessageTO messageTO, BindingResult result) throws ActException {
         try {
             messageSer.edit(messageTO);
@@ -135,7 +151,7 @@ public class MessageAct {
      * @throws ActException
      * @version v1
      */
-    @DeleteMapping("v1/delete/{id}")
+    @DeleteMapping("delete/{id}")
     public Result delete(@PathVariable String id) throws ActException {
         try {
             messageSer.remove(id);

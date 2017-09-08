@@ -196,7 +196,7 @@ public class MessageImpl extends ServiceImpl<Message, MessageDTO> implements Mes
             UserMessage userMessage = new UserMessage();
             userMessage.setMessage(message);
             userMessage.setRead(false);
-            userMessage.setUser(userSer.findById(id));
+            userMessage.setUser(userSer.findByIdOrMail(id));
             userMessages.add(userMessage);
         }
         userMessageSer.save(userMessages);

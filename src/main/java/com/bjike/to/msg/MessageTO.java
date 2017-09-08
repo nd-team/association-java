@@ -40,7 +40,7 @@ public class MessageTO extends BaseTO {
 
 
     /**
-     * 消息类型:[系统:SYS(默认),文章:ARTICLE,其他:OTHER]
+     * 消息类型:[系统:SYS(邮件时默认),推送:PUSH(消息时默认),其他:OTHER]
      */
     @NotBlank(message = "消息类型不能为空", groups = {EDIT.class})
     private MsgType msgType;
