@@ -29,18 +29,18 @@ public class Shop extends BaseEntity {
     @Column(columnDefinition = " VARCHAR(100) COMMENT '地点id' ", nullable = false)
 
     private String pointId;
-    /**
-     * x坐标
-     */
-    @Column(columnDefinition = " VARCHAR(100) COMMENT 'x坐标' ", nullable = false)
 
-    private String pointX;
     /**
-     * y坐标
+     * 经度
      */
-    @Column(columnDefinition = "VARCHAR(100) COMMENT 'y坐标' ", nullable = false)
+    @Column(columnDefinition = " VARCHAR(100) COMMENT '经度' ", nullable = false)
+    private String longitude;
 
-    private String pointY;
+    /**
+     * 纬度
+     */
+    @Column(columnDefinition = "VARCHAR(100) COMMENT '经度' ", nullable = false)
+    private String latitude;
 
 
     /**
@@ -63,20 +63,20 @@ public class Shop extends BaseEntity {
         this.address = address;
     }
 
-    public String getPointX() {
-        return pointX;
+    public String getLongitude() {
+        return longitude;
     }
 
-    public void setPointX(String pointX) {
-        this.pointX = pointX;
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
     }
 
-    public String getPointY() {
-        return pointY;
+    public String getLatitude() {
+        return latitude;
     }
 
-    public void setPointY(String pointY) {
-        this.pointY = pointY;
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
     }
 
     public String getName() {

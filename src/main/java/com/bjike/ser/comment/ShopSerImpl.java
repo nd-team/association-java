@@ -29,8 +29,8 @@ public class ShopSerImpl extends ServiceImpl<Shop, ShopDTO> implements ShopSer {
 
     @Override
     public List<ShopVO> nearby(ShopDTO dto) throws SerException {
-        double latitude = dto.getPointX();
-        double longitude = dto.getPointY();
+        double latitude = dto.getLatitude();
+        double longitude = dto.getLongitude();
         double r = 6371;//地球半径千米
         double dis = 0.5;//0.5千米距离
         double dlng =  2*Math.asin(Math.sin(dis/(2*r))/Math.cos(latitude*Math.PI/180));
@@ -41,8 +41,9 @@ public class ShopSerImpl extends ServiceImpl<Shop, ShopDTO> implements ShopSer {
         double maxlat = latitude+dlat;
         double minlng = longitude -dlng;
         double maxlng = longitude + dlng;
-        String sql = "select id,name,seq,point_id,pointX,pointY,address from shop where pointY>="+minlat+" and pointY <="+maxlat+" and pointX<="+minlng+" and pointX>="+maxlng;
-        List<ShopVO> vos = super.findBySql(sql,ShopVO.class,new String[]{"id","name","seq","pointId","pointX","pointY","address"});
+
+        String sql = "select id,name,seq,point_id,longitude,latitude,address from shop where longitude>="+minlat+" and longitude <="+maxlat+" and latitude<="+minlng+" and latitude>="+maxlng;
+        List<ShopVO> vos = super.findBySql(sql,ShopVO.class,new String[]{"id","name","seq","pointId","longitude","latitude","address"});
         for(ShopVO shop: vos){
             sql = "select  b.headPath from comment a,user b where a.shop_id='"+shop.getId()+"' and a.user_id=b.id  desc  LIMIT 0,3";
             List<Object> ob_images =  super.findBySql(sql);

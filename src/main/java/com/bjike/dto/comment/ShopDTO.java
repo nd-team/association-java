@@ -10,8 +10,15 @@ import com.bjike.dto.BaseDTO;
  * @Copy: [com.bjike]
  */
 public class ShopDTO extends BaseDTO{
-    private Double pointX;
-    private Double pointY;
+    /**
+     * 经度
+     */
+    private double longitude ;
+    /**
+     * 纬度
+     */
+    private  double latitude ;
+
     /**
      * 范围(千米)
      */
@@ -27,20 +34,19 @@ public class ShopDTO extends BaseDTO{
         this.range = range;
     }
 
-    public Double getPointX() {
-        return pointX;
+    public double getLongitude() {
+        return longitude;
     }
 
-    public void setPointX(Double pointX) {
-        this.pointX = pointX;
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 
-    public Double getPointY() {
-        return pointY;
+    public double getLatitude() {
+        return latitude;
     }
 
-    public void setPointY(Double pointY) {
-        this.pointY = pointY;
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
     }
-
 }

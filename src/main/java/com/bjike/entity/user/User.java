@@ -75,21 +75,6 @@ public class User extends BaseEntity {
     @Column(columnDefinition = "TINYINT(1) DEFAULT 0 COMMENT '会员类型' ", nullable = false, insertable = false)
     private UserType userType = UserType.ORDINARY;
 
-    /**
-     * 坐标x
-     */
-    @Transient
-    private String pointX;
-    /**
-     * 坐标y
-     */
-    @Transient
-    private String pointY;
-    /**
-     * 用户链
-     */
-    @Transient
-    private User chain;
 
     public String getUsername() {
         return username;
@@ -145,30 +130,6 @@ public class User extends BaseEntity {
 
     public void setStatus(Status status) {
         this.status = status;
-    }
-
-    public String getPointX() {
-        return pointX;
-    }
-
-    public void setPointX(String pointX) {
-        this.pointX = pointX;
-    }
-
-    public String getPointY() {
-        return pointY;
-    }
-
-    public void setPointY(String pointY) {
-        this.pointY = pointY;
-    }
-
-    public User getChain() {
-        return chain;
-    }
-
-    public void setChain(User chain) {
-        this.chain = chain;
     }
 
     public String getPhone() {

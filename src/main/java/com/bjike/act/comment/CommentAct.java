@@ -181,7 +181,6 @@ public class CommentAct {
     @PostMapping("upload/img/{commentId}")
     public Result uploadImg(@PathVariable String commentId, HttpServletRequest request) throws ActException {
         try {
-            String userId = UserUtil.currentUserID();
             String path =FileUtil.getModulePath("comment",true);
             List<File> files = FileUtil.save(request, path);
             commentSer.uploadImg(commentId, files);

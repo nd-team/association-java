@@ -6,7 +6,7 @@ import com.bjike.common.exception.SerException;
 import com.bjike.common.util.UserUtil;
 import com.bjike.dto.Restrict;
 import com.bjike.dto.user.UserInfoDTO;
-import com.bjike.entity.user.Exp;
+import com.bjike.entity.user.other.Exp;
 import com.bjike.entity.user.UserInfo;
 import com.bjike.redis.client.RedisClient;
 import com.bjike.ser.ServiceImpl;

@@ -22,15 +22,14 @@ public class ShopTO extends BaseTO {
     @NotBlank(message = "请填写店铺地址", groups = {ADD.class, EDIT.class})
     private String address;
     /**
-     * x坐标
+     * 经度
      */
+    private String longitude;
 
-    private String pointX;
     /**
-     * y坐标
+     * 纬度
      */
-
-    private String pointY;
+    private String latitude;
 
     /**
      * 范围(千米)
@@ -51,20 +50,20 @@ public class ShopTO extends BaseTO {
         this.address = address;
     }
 
-    public String getPointX() {
-        return pointX;
+    public String getLongitude() {
+        return longitude;
     }
 
-    public void setPointX(String pointX) {
-        this.pointX = pointX;
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
     }
 
-    public String getPointY() {
-        return pointY;
+    public String getLatitude() {
+        return latitude;
     }
 
-    public void setPointY(String pointY) {
-        this.pointY = pointY;
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
     }
 
     public String getName() {

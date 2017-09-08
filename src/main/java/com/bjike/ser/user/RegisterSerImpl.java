@@ -67,6 +67,9 @@ public class RegisterSerImpl implements RegisterSer {
         }else { //简单的注册情况
             UserInfo userInfo = new UserInfo();
             userInfo.setUser(user);
+            userInfo.setExperience(0.0);
+            userInfo.setContribute(0.0);
+            userInfo.setReputation(0.0);
             userInfoSer.save(userInfo);
         }
         String token = loginUser(to);//登录用户

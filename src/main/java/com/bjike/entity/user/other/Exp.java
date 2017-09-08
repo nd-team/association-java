@@ -1,6 +1,4 @@
-package com.bjike.entity.user;
-
-import java.time.LocalDate;
+package com.bjike.entity.user.other;
 
 /**
  * @Author: [liguiqin]

@@ -36,16 +36,18 @@ public class CommentTO extends BaseTO {
     @NotBlank(message = "请填写地点id", groups = {ADD.class, EDIT.class})
     private String pointId;
 
+
     /**
-     * 经纬X坐标
+     * 经度
      */
-    @NotBlank(message = "请填写经纬X坐标", groups = {ADD.class, EDIT.class})
-    private String pointX;
+    @NotBlank(message = "请填写经度坐标", groups = {ADD.class, EDIT.class})
+    private String longitude;
+
     /**
-     * 经纬Y坐标
+     * 纬度
      */
-    @NotBlank(message = "请填写经纬Y坐标", groups = {ADD.class, EDIT.class})
-    private String pointY;
+    @NotBlank(message = "请填写纬度坐标", groups = {ADD.class, EDIT.class})
+    private String latitude;
     /**
      * 店铺名
      */
@@ -79,20 +81,20 @@ public class CommentTO extends BaseTO {
         this.scoreType = scoreType;
     }
 
-    public String getPointX() {
-        return pointX;
+    public String getLongitude() {
+        return longitude;
     }
 
-    public void setPointX(String pointX) {
-        this.pointX = pointX;
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
     }
 
-    public String getPointY() {
-        return pointY;
+    public String getLatitude() {
+        return latitude;
     }
 
-    public void setPointY(String pointY) {
-        this.pointY = pointY;
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
     }
 
     public String getShopName() {

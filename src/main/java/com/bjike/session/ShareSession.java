@@ -3,6 +3,7 @@ package com.bjike.session;
 
 import com.bjike.common.exception.SerException;
 import com.bjike.entity.user.User;
+import com.bjike.entity.user.other.ShakeUser;
 import com.google.common.cache.*;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -26,20 +27,20 @@ public final class ShareSession {
     private ShareSession() {
     }
 
-    private static final LoadingCache<String, User> USER_SESSION = CacheBuilder.newBuilder()
+    private static final LoadingCache<String, ShakeUser> USER_SESSION = CacheBuilder.newBuilder()
             .expireAfterWrite(5, TimeUnit.SECONDS)
             .maximumSize(1000)
-            .removalListener(new RemovalListener<String, User>() {
+            .removalListener(new RemovalListener<String, ShakeUser>() {
                 @Override
-                public void onRemoval(RemovalNotification<String, User> notification) {
+                public void onRemoval(RemovalNotification<String, ShakeUser> notification) {
                     if (!notification.getCause().equals(RemovalCause.REPLACED)) {
                         logger.info("remove:" + notification.getKey());
                     }
                 }
             })
-            .build(new CacheLoader<String, User>() {
+            .build(new CacheLoader<String, ShakeUser>() {
                 @Override
-                public User load(String key) throws Exception {
+                public ShakeUser load(String key) throws Exception {
                     return null;
                 }
             });
@@ -52,7 +53,7 @@ public final class ShareSession {
      * @param user  登录用户信息
      * @return 是否已经登录
      */
-    public static void put(String token, User user) {
+    public static void put(String token, ShakeUser user) {
         if (StringUtils.isNotBlank(token)) {
             USER_SESSION.put(token, user);
         } else {
@@ -78,7 +79,7 @@ public final class ShareSession {
     }
 
 
-    public static User get(String time) {
+    public static ShakeUser get(String time) {
         try {
             if (StringUtils.isNotBlank(time)) {
                 return USER_SESSION.get(time);
@@ -104,7 +105,7 @@ public final class ShareSession {
      *
      * @return 会话信息集合
      */
-    public static LoadingCache<String, User> sessions() {
+    public static LoadingCache<String, ShakeUser> sessions() {
         if (null != USER_SESSION && USER_SESSION.size() > 0) {
             return USER_SESSION;
         }

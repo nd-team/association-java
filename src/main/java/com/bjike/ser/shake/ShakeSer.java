@@ -14,12 +14,12 @@ public interface ShakeSer {
     /**
      * 摇一摇
      *
-     * @param pointX
-     * @param pointY
+     * @param longitude
+     * @param latitude
      * @return
      * @throws SerException
      */
-    default User shake( String pointX, String pointY) throws SerException {
+    default User shake( String longitude, String latitude) throws SerException {
         return null;
     }
 }

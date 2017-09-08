@@ -19,14 +19,14 @@ public class ShopVO extends BaseVO {
     private String address;
 
     /**
-     * x坐标
+     * 经度
      */
-    private String pointX;
+    private String longitude;
 
     /**
-     * y坐标
+     * 纬度
      */
-    private String pointY;
+    private String latitude;
 
     /**
      * 店铺名
@@ -52,20 +52,20 @@ public class ShopVO extends BaseVO {
         this.address = address;
     }
 
-    public String getPointX() {
-        return pointX;
+    public String getLongitude() {
+        return longitude;
     }
 
-    public void setPointX(String pointX) {
-        this.pointX = pointX;
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
     }
 
-    public String getPointY() {
-        return pointY;
+    public String getLatitude() {
+        return latitude;
     }
 
-    public void setPointY(String pointY) {
-        this.pointY = pointY;
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
     }
 
     public String getName() {

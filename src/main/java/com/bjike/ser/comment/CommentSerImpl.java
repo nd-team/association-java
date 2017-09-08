@@ -62,8 +62,8 @@ public class CommentSerImpl extends ServiceImpl<Comment, CommentDTO> implements 
 
             } else {
                 shop = new Shop();
-                shop.setPointX(to.getPointX());
-                shop.setPointY(to.getPointY());
+                shop.setLatitude(to.getLatitude());
+                shop.setLongitude(to.getLongitude());
                 shop.setName(to.getShopName());
                 shop.setAddress(to.getAddress());
                 shop.setPointId(to.getPointId());

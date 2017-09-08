@@ -2,12 +2,14 @@ package com.bjike.ser.user;
 
 import com.bjike.common.exception.SerException;
 import com.bjike.common.util.UserUtil;
+import com.bjike.common.util.bean.BeanCopy;
 import com.bjike.dto.Restrict;
 import com.bjike.dto.user.RelationshipDTO;
 import com.bjike.dto.user.UserDTO;
-import com.bjike.entity.user.FriendChain;
 import com.bjike.entity.user.Relationship;
 import com.bjike.entity.user.User;
+import com.bjike.entity.user.other.FriendChain;
+import com.bjike.entity.user.other.UserChain;
 import com.bjike.ser.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -68,8 +70,9 @@ public class RelationshipSerImpl extends ServiceImpl<Relationship, RelationshipD
                         if (relationship.getFriendChains().size() == 5) {
                             return;
                         }
-                        User myFriend = userSer.findById(mid);
-                        User u = new User();
+                        User _user = userSer.findById(mid);
+                        UserChain myFriend = BeanCopy.copyProperties(_user, UserChain.class);
+                        UserChain u = new UserChain();
                         u.setNickname(seek.getNickname());
                         u.setHeadPath(seek.getHeadPath());
                         u.setId(seek.getId());
@@ -100,9 +103,9 @@ public class RelationshipSerImpl extends ServiceImpl<Relationship, RelationshipD
                                     return;
                                 }
                                 List<String> nameList = new ArrayList<>();
-                                User friend_Friend = userSer.findById(friend_friend);
-                                User second_chain = userSer.findById(my_fid);
-                                User u = new User();
+                                UserChain friend_Friend = BeanCopy.copyProperties(userSer.findById(friend_friend), UserChain.class);
+                                UserChain second_chain = BeanCopy.copyProperties(userSer.findById(my_fid), UserChain.class);
+                                UserChain u = new UserChain();
                                 u.setNickname(seek.getNickname());
                                 u.setHeadPath(seek.getHeadPath());
                                 u.setId(seek.getId());
@@ -146,14 +149,14 @@ public class RelationshipSerImpl extends ServiceImpl<Relationship, RelationshipD
                                         return;
                                     }
                                     List<String> nameList = new ArrayList<>();
-                                    User last_chain = userSer.findById(friend_friend);
-                                    User u = new User();
+                                    UserChain last_chain = BeanCopy.copyProperties(userSer.findById(friend_friend), UserChain.class);
+                                    UserChain u = new UserChain();
                                     u.setNickname(seek.getNickname());
                                     u.setHeadPath(seek.getHeadPath());
                                     u.setId(seek.getId());
                                     last_chain.setChain(u);
-                                    User second_chain = userSer.findById(fid);
-                                    User first_chain = userSer.findById(friend);
+                                    UserChain second_chain = BeanCopy.copyProperties(userSer.findById(fid), UserChain.class);
+                                    UserChain first_chain = BeanCopy.copyProperties(userSer.findById(friend), UserChain.class);
                                     nameList.add(last_chain.getNickname());
                                     nameList.add(u.getNickname());
                                     nameList.add(second_chain.getNickname());

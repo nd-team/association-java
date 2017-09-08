@@ -36,9 +36,9 @@ public class ShakeAct {
     private ShakeSer shakeSer;
 
     @GetMapping("shake")
-    public Result list(String pointX, String pointY) throws ActException {
+    public Result list(String longitude, String latitude) throws ActException {
         try {
-            User vos = shakeSer.shake(pointX, pointY);
+            User vos = shakeSer.shake(longitude, latitude);
             return ActResult.initialize(vos);
 
         } catch (SerException e) {

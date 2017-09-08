@@ -1,4 +1,4 @@
-package com.bjike.entity.user;
+package com.bjike.entity.user.other;
 
 /**
  * 朋友关系链
@@ -13,13 +13,13 @@ public class FriendChain {
     /**
      * 关系链
      */
-    private User friendChain = null;
+    private UserChain friendChain = null;
 
-    public User getFriendChain() {
+    public UserChain getFriendChain() {
         return friendChain;
     }
 
-    public void setFriendChain(User friendChain) {
+    public void setFriendChain(UserChain friendChain) {
         this.friendChain = friendChain;
     }
 }

@@ -111,18 +111,14 @@ public class UserInfo extends BaseEntity {
     /**
      * 婚姻状况
      */
-    @Column(name = "is_expired", columnDefinition = "TINYINT(1) DEFAULT 0 COMMENT '婚姻状况'")
+    @Column(name = "is_marriage", columnDefinition = "TINYINT(1) DEFAULT 0 COMMENT '婚姻状况'")
     private Boolean marriage;
     /**
      * qq
      */
     @Column(columnDefinition = "VARCHAR(30) COMMENT 'qq' ")
     private String qq;
-    /**
-     * 邮箱
-     */
-    @Column(columnDefinition = "VARCHAR(30) COMMENT '邮箱' ")
-    private String email;
+
     /**
      * 微信
      */
@@ -290,13 +286,6 @@ public class UserInfo extends BaseEntity {
         this.qq = qq;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     public String getWeChat() {
         return weChat;

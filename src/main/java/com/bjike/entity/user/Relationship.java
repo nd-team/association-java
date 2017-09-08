@@ -1,6 +1,7 @@
 package com.bjike.entity.user;
 
 import com.bjike.entity.BaseEntity;
+import com.bjike.entity.user.other.FriendChain;
 import com.bjike.type.Status;
 import com.bjike.type.user.RelationshipType;
 
