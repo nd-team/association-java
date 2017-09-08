@@ -1,86 +1,115 @@
-package com.bjike.entity.CharitableActivities;
+package com.bjike.vo.CharitableActivities;
 
-import com.bjike.entity.BaseEntity;
+import com.bjike.vo.BaseVO;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import java.time.LocalDateTime;
 
 /**
- * 公益活动发起
- *
- * @Author: [zhuangkaiqin]
- * @Date: [2017-08-36 15:36]
+ * @Author: [dengjunren]
+ * @Date: [2017-08-31 09:00]
  * @Description: [ ]
  * @Version: [1.0.0]
  * @Copy: [com.bjike]
  */
-@Entity
-@Table(name = "charitableactivities_initiateactivities")
-public class InitiateActivities extends BaseEntity {
+public class InitiateActivitiesVO extends BaseVO {
 
-    @Column(columnDefinition = "VARCHAR(36) COMMENT '发起人' ", nullable = false)
+    /**
+     * 发起人
+     */
     private String sponsor;
 
-    @Column(columnDefinition = "VARCHAR(255) COMMENT '活动主题名称' ", nullable = false, unique = true)
+    /**
+     * 姓名
+     */
+    private String name;
+
+    /**
+     * 发起人头像
+     */
+    private String sponsorPathHead;
+
+    /**
+     * 活动主题名称
+     */
     private String activitySubject;
 
-    @Column(columnDefinition = "VARCHAR(255) COMMENT '活动主题图片' ")
-    private String subjectPath;
+    /**
+     * 活动时间
+     */
+    private String activityTime;
 
-    @Column(columnDefinition = "DATETIME COMMENT '活动开始时间' ", nullable = false)
-    private LocalDateTime activityStartTime;
+    /**
+     * 报名截止时间
+     */
+    private String deadline;
 
-    @Column(columnDefinition = "DATETIME COMMENT '活动结束时间' ", nullable = false)
-    private LocalDateTime activityEndTime;
-
-    @Column(columnDefinition = "DATETIME COMMENT '报名截止时间' ", nullable = false)
-    private LocalDateTime deadline;
-
-    @Column(columnDefinition = "VARCHAR(255) COMMENT '出发地' ")
+    /**
+     * 出发地
+     */
     private String departure;
 
-    @Column(columnDefinition = "VARCHAR(255) COMMENT '活动地点' ")
+    /**
+     * 活动地点
+     */
     private String eventLocation;
 
-    @Column(columnDefinition = "VARCHAR(255) COMMENT '人数限制' ")
+    /**
+     * 人数限制
+     */
     private String numberLimit;
 
-    @Column(columnDefinition = "VARCHAR(255) COMMENT '联系电话' ")
+    /**
+     * 联系电话
+     */
     private String phone;
 
-//    @Column(columnDefinition = "VARCHAR(255) COMMENT '姓名' ")
-//    private String name;
-
-    @Column(columnDefinition = "VARCHAR(255) COMMENT '报名费' ")
+    /**
+     * 报名费
+     */
     private String registeryFee;
 
-    @Column(columnDefinition = "VARCHAR(255) COMMENT '费用说明' ")
+    /**
+     * 费用说明
+     */
     private String costDescription;
 
-    @Column(columnDefinition = "VARCHAR(255) COMMENT '参与须知' ")
+    /**
+     * 参与须知
+     */
     private String participation;
 
-    @Column(columnDefinition = "VARCHAR(255) COMMENT '活动行程' ")
+    /**
+     * 活动行程
+     */
     private String activityItinerary;
 
-    @Column(columnDefinition = "VARCHAR(255) COMMENT '活动详情' ")
+    /**
+     * 活动详情
+     */
     private String detail;
 
-    @Column(columnDefinition = "TINYINT(1) COMMENT '活动状态' ")
+    /**
+     * 活动状态(１：进行中　０：已结束)
+     */
     private Boolean status;
 
-    @Column(columnDefinition = "BIGINT(20) COMMENT '已报名数' ")
+    /**
+     * 已报名数
+     */
     private Long num;
 
-    @Column(columnDefinition = "BIGINT(20) COMMENT '转发数' ")
+    /**
+     * 转发数
+     */
     private Long forwardingNumber;
 
-    @Column(columnDefinition = "BIGINT(20) COMMENT '点赞数' ")
+    /**
+     * 点赞数
+     */
     private Long praiseNumber;
 
-    @Column(columnDefinition = "BIGINT(20) COMMENT '评论数' ")
+    /**
+     * 评论数
+     */
     private Long commentsNumber;
 
     public String getSponsor() {
@@ -99,27 +128,19 @@ public class InitiateActivities extends BaseEntity {
         this.activitySubject = activitySubject;
     }
 
-    public LocalDateTime getActivityStartTime() {
-        return activityStartTime;
+    public String getActivityTime() {
+        return activityTime;
     }
 
-    public void setActivityStartTime(LocalDateTime activityStartTime) {
-        this.activityStartTime = activityStartTime;
+    public void setActivityTime(String activityTime) {
+        this.activityTime = activityTime;
     }
 
-    public LocalDateTime getActivityEndTime() {
-        return activityEndTime;
-    }
-
-    public void setActivityEndTime(LocalDateTime activityEndTime) {
-        this.activityEndTime = activityEndTime;
-    }
-
-    public LocalDateTime getDeadline() {
+    public String getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(LocalDateTime deadline) {
+    public void setDeadline(String deadline) {
         this.deadline = deadline;
     }
 
@@ -153,6 +174,14 @@ public class InitiateActivities extends BaseEntity {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getRegisteryFee() {
@@ -235,11 +264,11 @@ public class InitiateActivities extends BaseEntity {
         this.commentsNumber = commentsNumber;
     }
 
-    public String getSubjectPath() {
-        return subjectPath;
+    public String getSponsorPathHead() {
+        return sponsorPathHead;
     }
 
-    public void setSubjectPath(String subjectPath) {
-        this.subjectPath = subjectPath;
+    public void setSponsorPathHead(String sponsorPathHead) {
+        this.sponsorPathHead = sponsorPathHead;
     }
 }

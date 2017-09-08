@@ -1,86 +1,132 @@
-package com.bjike.entity.CharitableActivities;
+package com.bjike.to.CharitableActivities;
 
-import com.bjike.entity.BaseEntity;
+import com.bjike.common.aspect.ADD;
+import com.bjike.common.aspect.EDIT;
+import com.bjike.to.BaseTO;
+import org.hibernate.validator.constraints.NotBlank;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import java.time.LocalDateTime;
+import javax.validation.constraints.NotNull;
 
 /**
- * 公益活动发起
- *
- * @Author: [zhuangkaiqin]
- * @Date: [2017-08-36 15:36]
+ * @Author: [dengjunren]
+ * @Date: [2017-08-31 09:00]
  * @Description: [ ]
  * @Version: [1.0.0]
  * @Copy: [com.bjike]
  */
-@Entity
-@Table(name = "charitableactivities_initiateactivities")
-public class InitiateActivities extends BaseEntity {
+public class InitiateActivitiesTO extends BaseTO {
 
-    @Column(columnDefinition = "VARCHAR(36) COMMENT '发起人' ", nullable = false)
+    /**
+     * 发起人
+     */
     private String sponsor;
 
-    @Column(columnDefinition = "VARCHAR(255) COMMENT '活动主题名称' ", nullable = false, unique = true)
+    /**
+     * 活动主题名称
+     */
+    @NotBlank(message = "活动主题名称不能为空", groups = {ADD.class, EDIT.class})
     private String activitySubject;
 
-    @Column(columnDefinition = "VARCHAR(255) COMMENT '活动主题图片' ")
-    private String subjectPath;
+    /**
+     * 活动开始时间
+     */
+    @NotNull(message = "活动开始时间不能为空", groups = {ADD.class, EDIT.class})
+    private String activityStartTime;
 
-    @Column(columnDefinition = "DATETIME COMMENT '活动开始时间' ", nullable = false)
-    private LocalDateTime activityStartTime;
+    /**
+     * 活动结束时间
+     */
+    @NotNull(message = "活动结束时间不能为空", groups = {ADD.class, EDIT.class})
+    private String activityEndTime;
 
-    @Column(columnDefinition = "DATETIME COMMENT '活动结束时间' ", nullable = false)
-    private LocalDateTime activityEndTime;
+    /**
+     * 报名截止时间
+     */
+    @NotNull(message = "报名截止时间不能为空", groups = {ADD.class, EDIT.class})
+    private String deadline;
 
-    @Column(columnDefinition = "DATETIME COMMENT '报名截止时间' ", nullable = false)
-    private LocalDateTime deadline;
-
-    @Column(columnDefinition = "VARCHAR(255) COMMENT '出发地' ")
+    /**
+     * 出发地
+     */
+    @NotBlank(message = "出发地不能为空", groups = {ADD.class, EDIT.class})
     private String departure;
 
-    @Column(columnDefinition = "VARCHAR(255) COMMENT '活动地点' ")
+    /**
+     * 活动地点
+     */
+    @NotBlank(message = "活动地点不能为空", groups = {ADD.class, EDIT.class})
     private String eventLocation;
 
-    @Column(columnDefinition = "VARCHAR(255) COMMENT '人数限制' ")
+    /**
+     * 人数限制(数字可变，如：500人/无限制 ２选１,)
+     */
+    @NotBlank(message = "人数限制不能为空", groups = {ADD.class, EDIT.class})
     private String numberLimit;
 
-    @Column(columnDefinition = "VARCHAR(255) COMMENT '联系电话' ")
+    /**
+     * 联系电话
+     */
+    @NotBlank(message = "联系电话不能为空", groups = {ADD.class, EDIT.class})
     private String phone;
 
-//    @Column(columnDefinition = "VARCHAR(255) COMMENT '姓名' ")
+//    /**
+//     * 姓名
+//     */
 //    private String name;
 
-    @Column(columnDefinition = "VARCHAR(255) COMMENT '报名费' ")
+    /**
+     * 报名费
+     */
+    @NotBlank(message = "报名费不能为空", groups = {ADD.class, EDIT.class})
     private String registeryFee;
 
-    @Column(columnDefinition = "VARCHAR(255) COMMENT '费用说明' ")
+    /**
+     * 费用说明
+     */
+    @NotBlank(message = "费用说明不能为空", groups = {ADD.class, EDIT.class})
     private String costDescription;
 
-    @Column(columnDefinition = "VARCHAR(255) COMMENT '参与须知' ")
+    /**
+     * 参与须知
+     */
+    @NotBlank(message = "参与须知不能为空", groups = {ADD.class, EDIT.class})
     private String participation;
 
-    @Column(columnDefinition = "VARCHAR(255) COMMENT '活动行程' ")
+    /**
+     * 活动行程
+     */
+    @NotBlank(message = "活动行程不能为空", groups = {ADD.class, EDIT.class})
     private String activityItinerary;
 
-    @Column(columnDefinition = "VARCHAR(255) COMMENT '活动详情' ")
+    /**
+     * 活动详情
+     */
+    @NotBlank(message = "活动详情不能为空", groups = {ADD.class, EDIT.class})
     private String detail;
 
-    @Column(columnDefinition = "TINYINT(1) COMMENT '活动状态' ")
+    /**
+     * 活动状态(１：进行中　０：已结束)
+     */
     private Boolean status;
 
-    @Column(columnDefinition = "BIGINT(20) COMMENT '已报名数' ")
+    /**
+     * 已报名数
+     */
     private Long num;
 
-    @Column(columnDefinition = "BIGINT(20) COMMENT '转发数' ")
+    /**
+     * 转发数
+     */
     private Long forwardingNumber;
 
-    @Column(columnDefinition = "BIGINT(20) COMMENT '点赞数' ")
+    /**
+     * 点赞数
+     */
     private Long praiseNumber;
 
-    @Column(columnDefinition = "BIGINT(20) COMMENT '评论数' ")
+    /**
+     * 评论数
+     */
     private Long commentsNumber;
 
     public String getSponsor() {
@@ -99,27 +145,27 @@ public class InitiateActivities extends BaseEntity {
         this.activitySubject = activitySubject;
     }
 
-    public LocalDateTime getActivityStartTime() {
+    public String getActivityStartTime() {
         return activityStartTime;
     }
 
-    public void setActivityStartTime(LocalDateTime activityStartTime) {
+    public void setActivityStartTime(String activityStartTime) {
         this.activityStartTime = activityStartTime;
     }
 
-    public LocalDateTime getActivityEndTime() {
+    public String getActivityEndTime() {
         return activityEndTime;
     }
 
-    public void setActivityEndTime(LocalDateTime activityEndTime) {
+    public void setActivityEndTime(String activityEndTime) {
         this.activityEndTime = activityEndTime;
     }
 
-    public LocalDateTime getDeadline() {
+    public String getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(LocalDateTime deadline) {
+    public void setDeadline(String deadline) {
         this.deadline = deadline;
     }
 
@@ -154,6 +200,14 @@ public class InitiateActivities extends BaseEntity {
     public void setPhone(String phone) {
         this.phone = phone;
     }
+
+//    public String getName() {
+//        return name;
+//    }
+//
+//    public void setName(String name) {
+//        this.name = name;
+//    }
 
     public String getRegisteryFee() {
         return registeryFee;
@@ -233,13 +287,5 @@ public class InitiateActivities extends BaseEntity {
 
     public void setCommentsNumber(Long commentsNumber) {
         this.commentsNumber = commentsNumber;
-    }
-
-    public String getSubjectPath() {
-        return subjectPath;
-    }
-
-    public void setSubjectPath(String subjectPath) {
-        this.subjectPath = subjectPath;
     }
 }

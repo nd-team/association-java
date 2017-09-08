@@ -1,10 +1,6 @@
-package com.bjike.entity.CharitableActivities;
+package com.bjike.vo.CharitableActivities;
 
-import com.bjike.entity.BaseEntity;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import com.bjike.vo.BaseVO;
 
 /**
  * 公益活动报名信息
@@ -15,25 +11,45 @@ import javax.persistence.Table;
  * @Version: [1.0.0]
  * @Copy: [com.bjike]
  */
-@Entity
-@Table(name = "charitableactivities_registration")
-public class Registration extends BaseEntity {
-    @Column(columnDefinition = "VARCHAR(36) COMMENT '报名人id' ", nullable = false)
+public class RegistrationVO extends BaseVO {
+    /**
+     * 报名人id
+     */
     private String signUpId;
 
-    @Column(columnDefinition = "VARCHAR(255) COMMENT '公益活动id' ", nullable = false)
+    /**
+     * 报名人姓名
+     */
+    private String name;
+
+    /**
+     * 报名人头像
+     */
+    private String signUpPathHead;
+
+    /**
+     * 公益活动id
+     */
     private String initiateactivitiesID;
 
-    @Column(columnDefinition = "VARCHAR(255) COMMENT '手机' ", nullable = false)
+    /**
+     * 手机
+     */
     private String tellphone;
 
-    @Column(columnDefinition = "VARCHAR(255) COMMENT '公司' ")
+    /**
+     * 公司
+     */
     private String company;
 
-    @Column(columnDefinition = "VARCHAR(255) COMMENT '微信' ", nullable = false)
+    /**
+     * 微信
+     */
     private String wechat;
 
-    @Column(columnDefinition = "TINYINT(1) COMMENT '报名状态' ")
+    /**
+     * 报名状态
+     */
     private Boolean statas;
 
     public String getSignUpId() {
@@ -42,6 +58,14 @@ public class Registration extends BaseEntity {
 
     public void setSignUpId(String signUpId) {
         this.signUpId = signUpId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getInitiateactivitiesID() {
@@ -82,5 +106,13 @@ public class Registration extends BaseEntity {
 
     public void setStatas(Boolean statas) {
         this.statas = statas;
+    }
+
+    public String getSignUpPathHead() {
+        return signUpPathHead;
+    }
+
+    public void setSignUpPathHead(String signUpPathHead) {
+        this.signUpPathHead = signUpPathHead;
     }
 }

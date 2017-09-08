@@ -1,30 +1,34 @@
-package com.bjike.entity.CharitableActivities;
+package com.bjike.to.CharitableActivities;
 
-import com.bjike.entity.BaseEntity;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import com.bjike.common.aspect.ADD;
+import com.bjike.to.BaseTO;
+import org.hibernate.validator.constraints.NotBlank;
 
 /**
- * 回复表
- *
  * @Author: [dengjunren]
- * @Date: [2017-08-36 18:17]
+ * @Date: [2017-08-31 17:53]
  * @Description: [ ]
  * @Version: [1.0.0]
  * @Copy: [com.bjike]
  */
-@Entity
-@Table(name = "charitableactivities_reply")
-public class Reply extends BaseEntity {
-    @Column(columnDefinition = "VARCHAR(36) COMMENT '回复人' ")
+public class ReplyTO extends BaseTO {
+
+    /**
+     * 回复人
+     */
+    @NotBlank(message = "回复人不能为空", groups = {ADD.class})
     private String replyID;
 
-    @Column(columnDefinition = "VARCHAR(255) COMMENT '回复内容' ")
+    /**
+     * 回复内容
+     */
+    @NotBlank(message = "回复内容不能为空", groups = {ADD.class})
     private String content;
 
-    @Column(columnDefinition = "VARCHAR(255) COMMENT '回复的评论id' ")
+    /**
+     * 回复的评论id
+     */
+    @NotBlank(message = "回复的评论id不能为空", groups = {ADD.class})
     private String commentID;
 
     public String getReplyID() {
