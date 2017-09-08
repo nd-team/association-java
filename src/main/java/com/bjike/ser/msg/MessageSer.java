@@ -24,6 +24,7 @@ public interface MessageSer extends Ser<Message, MessageDTO> {
      * 发送邮件
      *
      * @param messageTO
+     * @des 默认为个人邮件(SPECIFIED), 指定PUB则发送所有人员
      */
     default void sendMail(MessageTO messageTO) throws SerException {
 
@@ -33,8 +34,19 @@ public interface MessageSer extends Ser<Message, MessageDTO> {
      * 推送移动端消息
      *
      * @param messageTO
+     * @des 默认为个人消息(SPECIFIED), 指定PUB则发送所有人员
      */
     default void pushMsg(MessageTO messageTO) throws SerException {
+
+    }
+
+    /**
+     * 推送移动端消息及发送邮件
+     * 默认范围个人
+     *
+     * @param messageTO
+     */
+    default void pushAndMail(MessageTO messageTO) throws SerException {
 
     }
 

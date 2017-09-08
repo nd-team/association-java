@@ -4,6 +4,7 @@ import com.bjike.common.exception.SerException;
 import com.bjike.entity.comment.Shop;
 import com.bjike.entity.user.User;
 import com.bjike.ser.comment.ShopSer;
+import com.bjike.ser.msg.UserMessageSer;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +29,13 @@ import java.util.stream.Collectors;
 public class JunitTest {
     @Autowired
     private ShopSer shopSer;
+    @Autowired
+    private UserMessageSer userMessageSer;
 
     @Test
     public void select()throws SerException{
         List<Shop> shops = shopSer.findAll();
         System.out.println(JSON.toJSONString(shops));
+        userMessageSer.unreadList("1111");
     }
 }

@@ -12,33 +12,41 @@ package com.bjike.type.msg;
 public enum MsgType {
 
     /**
-     * 推送消息
-     */
-    PUSH(0),
-    /**
      * 系统通知
      */
-    SYS(1),
+    SYS(0),
+    /**
+     * 消息通知
+     */
+    MSG(1),
+    /**
+     * 邮件通知
+     */
+    MAIL(2),
+    /**
+     * 消息邮件通知
+     */
+    MSG_MAIL(3),
     /**
      * 点对点
      */
-    POINT(2),
+    POINT(4),
     /**
      * 群发
      */
-    GROUP(3),
+    GROUP(5),
     /**
      * 上线通知
      */
-    ONLINE(4),
+    ONLINE(6),
     /**
      * 下线通知
      */
-    OFFLINE(5),
+    OFFLINE(7),
     /**
      * 加好友通知
      */
-    FRIEND(5),;
+    FRIEND(8),;
     private int code;
 
     MsgType(int code) {

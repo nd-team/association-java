@@ -56,6 +56,28 @@ public interface UserSer extends Ser<User, UserDTO> {
     /**
      * 通过邮件获取id查询
      *
+     * @param mails 条件 ,空查询全部
+     * @return
+     * @throws SerException
+     */
+    default String[] findIdByMail(String[] mails) throws SerException {
+        return null;
+    }
+    /**
+     * 通过邮件获取id查询
+     *
+     * @param ids 条件,空查询全部
+     * @return
+     * @throws SerException
+     */
+    default String[] findMailById(String[] ids) throws SerException {
+        return null;
+    }
+
+
+    /**
+     * 通过邮件获取id查询
+     *
      * @param cond 条件
      * @return
      * @throws SerException

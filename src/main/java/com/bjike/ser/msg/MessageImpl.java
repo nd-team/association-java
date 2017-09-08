@@ -64,41 +64,76 @@ public class MessageImpl extends ServiceImpl<Message, MessageDTO> implements Mes
     @Transactional
     @Override
     public void sendMail(MessageTO messageTO) throws SerException {
-        String[] mails = messageTO.getReceivers();
-        String error_mail = null;
-        for (String email : mails) {
-            if (!Validator.isEmail(email)) {
-                error_mail = email;
-                break;
-            }
-        }
-        if (StringUtils.isNotBlank(error_mail)) {
-            throw new SerException("请检查该[" + error_mail + "]邮箱地址是否正确");
-        }
-        initMsg(messageTO, MsgType.SYS);
-        Message message = BeanCopy.copyProperties(messageTO, Message.class, true);
-        super.save(message); //保存消息到数据库
-        messageTO.setId(message.getId());
-        if (messageTO.getRangeType().equals(RangeType.SPECIFIED)) {
-            messageTO.setReceivers(messageTO.getReceivers());
-        } else if (messageTO.getRangeType().equals(RangeType.PUB)) {
-
-        }
-        kafkaProducer.produce(messageTO);
+        //默认范围个人
+        messageTO.setRangeType(messageTO.getRangeType() != null ? messageTO.getRangeType() : RangeType.SPECIFIED);
+        //默认发邮件
+        messageTO.setMsgType(messageTO.getMsgType() != null ? messageTO.getMsgType() : MsgType.MAIL);
+        pushAndMail(messageTO);
     }
 
     @Transactional
     @Override
     public void pushMsg(MessageTO messageTO) throws SerException {
-        initMsg(messageTO, MsgType.PUSH);
+        //默认范围个人
+        messageTO.setRangeType(messageTO.getRangeType() != null ? messageTO.getRangeType() : RangeType.SPECIFIED);
+        //默认只发消息
+        messageTO.setMsgType(messageTO.getMsgType() != null ? messageTO.getMsgType() : MsgType.MSG);
+        pushAndMail(messageTO);
+    }
+
+    /**
+     * 只能通过id传递
+     *
+     * @param messageTO
+     * @throws SerException
+     */
+    @Override
+    public void pushAndMail(MessageTO messageTO) throws SerException {
+
+        String[] userIds = messageTO.getReceivers();
+        String[] mails = null;
+        MsgType msgType = messageTO.getMsgType() != null ? messageTO.getMsgType() : MsgType.MSG_MAIL;
+        RangeType rangeType = messageTO.getRangeType() != null ? messageTO.getRangeType() : RangeType.SPECIFIED;
+        if (rangeType.equals(RangeType.PUB) && msgType.equals(MsgType.MAIL)) {  //公共邮件
+            mails = userSer.findAllByField("emails");
+        } else if (rangeType.equals(RangeType.SPECIFIED) && msgType.equals(MsgType.MAIL)) { //个人邮件
+            mails = userSer.findMailById(userIds);
+        }
+        if (rangeType.equals(RangeType.PUB) && msgType.equals(MsgType.MSG)) {  //公共消息
+            userIds = userSer.findAllByField("id");
+        } else {//个人消息
+            userIds = messageTO.getReceivers();
+        }
+
+        if (msgType.equals(MsgType.MSG_MAIL)) {//个人,功能邮件及消息
+            if (rangeType.equals(RangeType.SPECIFIED)) {
+                userIds = messageTO.getReceivers();
+                mails = userSer.findMailById(userIds);
+            } else if ((rangeType.equals(RangeType.PUB))) {
+                mails = userSer.findAllByField("emails");
+                userIds = userSer.findAllByField("id");
+            }
+        }
+        if (!msgType.equals(MsgType.MSG)) { //错误邮箱地址过滤
+            mails = filterMail(mails);
+        }
+        initMsg(messageTO);
         Message message = BeanCopy.copyProperties(messageTO, Message.class, true);
         super.save(message); //保存消息到数据库
-        if (RangeType.SPECIFIED.equals(messageTO.getRangeType())) { //個人消息
-            savePersonalMsg(messageTO.getReceivers(), message);
-        } else if (RangeType.PUB.equals(messageTO.getRangeType())) {//公共消息
-            savePubMsgToRedis(messageTO, message.getId());
+        if (rangeType.equals(RangeType.SPECIFIED)) { //保存个人消息
+            savePersonalMsg(userIds, message);//保存并等待推送
+        } else { //保存公共消息到缓存
+            messageTO.setReceivers(userIds);
+            savePubMsgToRedis(messageTO, message.getId());//保存并等待推送
         }
+        //邮件发送
+        if (msgType.equals(MsgType.MAIL) || msgType.equals(MsgType.MSG_MAIL)) {
+            messageTO.setReceivers(mails);
+            kafkaProducer.produce(messageTO);
+        }
+
     }
+
 
     @Override
     public void read(String messageId) throws SerException {
@@ -176,7 +211,7 @@ public class MessageImpl extends ServiceImpl<Message, MessageDTO> implements Mes
         List<Message> messages = this.unreadList(userId, null);
         for (Message ms : messages) {
             Msg msg = new Msg();
-            msg.setMsgType(MsgType.PUSH);
+            msg.setMsgType(MsgType.MSG);
             msg.setContent(ms.getContent());
             msg.setUserId(userId);
             msg.setTitle(ms.getTitle());
@@ -204,7 +239,7 @@ public class MessageImpl extends ServiceImpl<Message, MessageDTO> implements Mes
     }
 
     /**
-     * 保存公共消息
+     * 保存公共消息到缓存
      *
      * @param messageTO
      * @param message_id
@@ -213,10 +248,10 @@ public class MessageImpl extends ServiceImpl<Message, MessageDTO> implements Mes
     private void savePubMsgToRedis(MessageTO messageTO, String message_id) throws SerException {
         MessageRead messageRead = BeanCopy.copyProperties(messageTO, MessageRead.class);
         String json_messageRead = JSON.toJSONString(messageRead);
-        String[] receivers = userSer.findAllByField("id");
-        if (null != receivers) { //公共消息
-            for (int i = 0; i < receivers.length; i++) {
-                redisClient.appendToList(receivers[i] + UNREAD_MSG, 30 * 24 * 60 * 60, message_id); //未读消息保存一个月
+        String[] userIds = messageTO.getReceivers();
+        if (null != userIds) { //公共消息
+            for (int i = 0; i < userIds.length; i++) {
+                redisClient.appendToList(userIds[i] + UNREAD_MSG, 30 * 24 * 60 * 60, message_id); //未读消息保存一个月
             }
             //保存系统所发送的所有消息，以供查询
             redisClient.appendToMap(PUB_MSG, message_id, json_messageRead, 7 * 24 * 60 * 60);//系统所发出的消息缓存7天
@@ -225,7 +260,7 @@ public class MessageImpl extends ServiceImpl<Message, MessageDTO> implements Mes
 
     }
 
-    private void initMsg(MessageTO messageTO, MsgType msgType) {
+    private void initMsg(MessageTO messageTO) {
         if (StringUtils.isBlank(messageTO.getCreateTime())) {
             messageTO.setCreateTime(DateUtil.dateToString(LocalDateTime.now()));
         }
@@ -238,10 +273,19 @@ public class MessageImpl extends ServiceImpl<Message, MessageDTO> implements Mes
                 messageTO.setSenderId("sys");
                 messageTO.setSenderName("admin");
             }
-
         }
-        messageTO.setMsgType(null != messageTO.getMsgType() ? messageTO.getMsgType() : msgType);
-        messageTO.setRangeType(null != messageTO.getRangeType() ? messageTO.getRangeType() : RangeType.SPECIFIED);
     }
+
+    private String[] filterMail(String[] mails) throws SerException {
+        List<String> list = new ArrayList<>();
+        for (String mail : mails) {
+            if (Validator.isEmail(mail)) {
+                list.add(mail);
+            }
+        }
+        String[] rs = new String[list.size()];
+        return list.toArray(rs);
+    }
+
 
 }

@@ -44,6 +44,7 @@ public class MessageAct {
      *
      * @param messageTO 消息体
      * @throws ActException
+     * @des 默认为个人邮件(SPECIFIED), 指定PUB则发送所有人员
      * @version v1
      */
     @PostMapping("send/mail")
@@ -55,11 +56,13 @@ public class MessageAct {
             throw new ActException(e.getMessage());
         }
     }
+
     /**
      * 推送消息
      *
      * @param messageTO 消息体
      * @throws ActException
+     * @des 默认为个人邮件(SPECIFIED), 指定PUB则发送所有人员
      * @version v1
      */
     @PostMapping("push")

@@ -40,16 +40,13 @@ public class MessageTO extends BaseTO {
 
 
     /**
-     * 消息类型:[系统:SYS(邮件时默认),推送:PUSH(消息时默认),其他:OTHER]
+     * 消息类型:[系统:SYS,推送:MSG(消息时默认),其他:OTHER]
      */
-    @NotBlank(message = "消息类型不能为空", groups = {EDIT.class})
     private MsgType msgType;
 
     /**
-     * 消息范围:[个人或多人消息:SPECIFIED(默认)，公共消息:PUB，组消息:GROUP]
+     * 消息范围:[个人或公共消息:SPECIFIED(默认)，公共消息:PUB]
      */
-    @NotBlank(message = "消息范围不能为空", groups = {EDIT.class})
-
     private RangeType rangeType;
 
     /**
