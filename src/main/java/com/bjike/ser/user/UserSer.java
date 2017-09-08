@@ -63,27 +63,17 @@ public interface UserSer extends Ser<User, UserDTO> {
     default User findByIdOrMail(String cond) throws SerException {
         return null;
     }
-    /**
-     * 通过邮件获取id查询
-     *
-     * @param mails 条件 ,空查询全部
-     * @return
-     * @throws SerException
-     */
-    default String[] findIdByMail(String[] mails) throws SerException {
-        return null;
-    }
-    /**
-     * 通过邮件获取id查询
-     *
-     * @param mails 条件,空查询全部
-     * @return
-     * @throws SerException
-     */
-    default String[] findMailById(String[] mails) throws SerException {
-        return null;
-    }
 
+    /**
+     * 查询该字段的所有数据
+     *
+     * @param field
+     * @return
+     * @throws SerException
+     */
+    default String[] findAllByField(String field) throws SerException {
+        return null;
+    }
 
     /**
      * 获取用户详情

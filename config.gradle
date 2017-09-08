@@ -12,6 +12,8 @@ allprojects {
         zxing_version = '3.3.0'
         japi_version = '1.0'
         beetl_version = '2.2.13'
+        kafka_version = '0.10.2.0'
+        email_version = '1.4'
 
     }
 

@@ -1,7 +1,6 @@
 package com.bjike.ser.msg;
 
 
-
 import com.bjike.common.exception.SerException;
 import com.bjike.dto.msg.MessageDTO;
 import com.bjike.entity.msg.Message;
@@ -22,11 +21,20 @@ import java.util.List;
  */
 public interface MessageSer extends Ser<Message, MessageDTO> {
     /**
-     * 发送消息
+     * 发送邮件
      *
      * @param messageTO
      */
-    default void send(MessageTO messageTO) throws SerException {
+    default void sendMail(MessageTO messageTO) throws SerException {
+
+    }
+
+    /**
+     * 推送移动端消息
+     *
+     * @param messageTO
+     */
+    default void pushMsg(MessageTO messageTO) throws SerException {
 
     }
 
@@ -49,12 +57,13 @@ public interface MessageSer extends Ser<Message, MessageDTO> {
 
     /**
      * 未读消息列表
+     *
      * @param userId
      * @param type
      * @return
      * @throws SerException
      */
-    default List<Message> unreadList(String userId, MsgType type) throws SerException{
+    default List<Message> unreadList(String userId, MsgType type) throws SerException {
         return null;
     }
 
@@ -73,6 +82,14 @@ public interface MessageSer extends Ser<Message, MessageDTO> {
      * @param messageTO 消息id
      */
     default void edit(MessageTO messageTO) throws SerException {
+    }
+
+    /**
+     * 登录后推送用户未接收到的消息
+     *
+     * @param userId 用户id
+     */
+    default void notice(String userId) throws SerException {
     }
 
 }

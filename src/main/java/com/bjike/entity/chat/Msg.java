@@ -27,6 +27,10 @@ public class Msg extends BaseEntity {
      */
     private String senderHeadPath;
     /**
+     * 发送标题
+     */
+    private String title;
+    /**
      * 发送内容
      */
     private String content;
@@ -81,6 +85,14 @@ public class Msg extends BaseEntity {
 
     public void setSenderHeadPath(String senderHeadPath) {
         this.senderHeadPath = senderHeadPath;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getContent() {

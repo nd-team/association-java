@@ -9,6 +9,7 @@ import com.bjike.common.util.regex.Validator;
 import com.bjike.dto.Restrict;
 import com.bjike.dto.msg.MessageDTO;
 import com.bjike.dto.msg.UserMessageDTO;
+import com.bjike.entity.chat.Msg;
 import com.bjike.entity.msg.Message;
 import com.bjike.entity.msg.MessageRead;
 import com.bjike.entity.msg.UserMessage;
@@ -16,11 +17,11 @@ import com.bjike.entity.user.User;
 import com.bjike.kafka.IKafkaProducer;
 import com.bjike.redis.client.RedisClient;
 import com.bjike.ser.ServiceImpl;
+import com.bjike.ser.chat.ChatSer;
 import com.bjike.ser.user.UserSer;
 import com.bjike.to.msg.MessageTO;
 import com.bjike.type.msg.MsgType;
 import com.bjike.type.msg.RangeType;
-import com.bjike.type.msg.SendType;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,6 +50,8 @@ public class MessageImpl extends ServiceImpl<Message, MessageDTO> implements Mes
     private IKafkaProducer kafkaProducer;
     @Autowired
     private UserMessageSer userMessageSer;
+    @Autowired
+    private ChatSer chatSer;
     /**
      * 公共消息
      */
@@ -60,43 +63,41 @@ public class MessageImpl extends ServiceImpl<Message, MessageDTO> implements Mes
 
     @Transactional
     @Override
-    public void send(MessageTO messageTO) throws SerException {
-        initMsg(messageTO);
+    public void sendMail(MessageTO messageTO) throws SerException {
+        String[] mails = messageTO.getReceivers();
+        String error_mail = null;
+        for (String email : mails) {
+            if (!Validator.isEmail(email)) {
+                error_mail = email;
+                break;
+            }
+        }
+        if (StringUtils.isNotBlank(error_mail)) {
+            throw new SerException("请检查该[" + error_mail + "]邮箱地址是否正确");
+        }
+        initMsg(messageTO, MsgType.SYS);
         Message message = BeanCopy.copyProperties(messageTO, Message.class, true);
         super.save(message); //保存消息到数据库
         messageTO.setId(message.getId());
-        String[] receiversId = null;
-        String[] receiversEmail = null;
-        boolean isEmail = true;
-        for (String email : messageTO.getReceivers()) { //要么全部为id,要么全部为邮箱
-            if (!Validator.isEmail(email)) {
-                isEmail = false;
-            }
-        }
-        if (!isEmail) { //如果是用户id则查找用户邮箱
-            receiversId = messageTO.getReceivers();
-            receiversEmail = userSer.findIdByMail(receiversId);
-        } else {//receivers 直接为邮箱方式
-            receiversEmail = messageTO.getReceivers();
-            receiversId = userSer.findMailById(receiversEmail);
-        }
+        if (messageTO.getRangeType().equals(RangeType.SPECIFIED)) {
+            messageTO.setReceivers(messageTO.getReceivers());
+        } else if (messageTO.getRangeType().equals(RangeType.PUB)) {
 
-        SendType sendType = messageTO.getSendType();
-        switch (sendType) {
-            case EMAIL:
-                messageTO.setReceivers(receiversEmail);
-                kafkaProducer.produce(messageTO);
-                break;
-            case MSG:
-                saveMsgToRedis(messageTO, message.getId(), receiversId); //保存到redis
-            case ALL:
-                messageTO.setReceivers(receiversEmail);
-                kafkaProducer.produce(messageTO);
-                saveMsgToRedis(messageTO, message.getId(), receiversId);//保存到redis
-                break;
         }
-        savePersonalMsg(receiversId, messageTO.getRangeType(), message); //保存个人消息到数据库
+        kafkaProducer.produce(messageTO);
+    }
 
+    @Transactional
+    @Override
+    public void pushMsg(MessageTO messageTO) throws SerException {
+        initMsg(messageTO, MsgType.PUSH);
+        Message message = BeanCopy.copyProperties(messageTO, Message.class, true);
+        super.save(message); //保存消息到数据库
+        if (RangeType.SPECIFIED.equals(messageTO.getRangeType())) { //個人消息
+            savePersonalMsg(messageTO.getReceivers(), message);
+        } else if (RangeType.PUB.equals(messageTO.getRangeType())) {//公共消息
+            savePubMsgToRedis(messageTO, message.getId());
+        }
     }
 
     @Override
@@ -170,34 +171,50 @@ public class MessageImpl extends ServiceImpl<Message, MessageDTO> implements Mes
 
     }
 
+    @Override
+    public void notice(String userId) throws SerException {
+        List<Message> messages = this.unreadList(userId, null);
+        for (Message ms : messages) {
+            Msg msg = new Msg();
+            msg.setMsgType(MsgType.PUSH);
+            msg.setContent(ms.getContent());
+            msg.setUserId(userId);
+            msg.setTitle(ms.getTitle());
+            chatSer.broadcast(msg);
+        }
+    }
 
     /**
      * 保存个人消息
      *
      * @throws SerException
      */
-    private void savePersonalMsg(String[] receiversId, RangeType type, Message m) throws SerException {
+    private void savePersonalMsg(String[] receiversId, Message m) throws SerException {
         Message message = super.findById(m.getId());
-        if (type.equals(RangeType.SPECIFIED)) {
-            List<UserMessage> userMessages = new ArrayList<>();
-            for (String id : receiversId) {
-                UserMessage userMessage = new UserMessage();
-                userMessage.setMessage(message);
-                userMessage.setRead(false);
-                userMessage.setUser(userSer.findById(id));
-                userMessages.add(userMessage);
-            }
-            userMessageSer.save(userMessages);
+        List<UserMessage> userMessages = new ArrayList<>();
+        for (String id : receiversId) {
+            UserMessage userMessage = new UserMessage();
+            userMessage.setMessage(message);
+            userMessage.setRead(false);
+            userMessage.setUser(userSer.findById(id));
+            userMessages.add(userMessage);
         }
+        userMessageSer.save(userMessages);
 
     }
 
-    private void saveMsgToRedis(MessageTO messageTO, String message_id, String[] receivers) throws SerException {
-
+    /**
+     * 保存公共消息
+     *
+     * @param messageTO
+     * @param message_id
+     * @throws SerException
+     */
+    private void savePubMsgToRedis(MessageTO messageTO, String message_id) throws SerException {
         MessageRead messageRead = BeanCopy.copyProperties(messageTO, MessageRead.class);
         String json_messageRead = JSON.toJSONString(messageRead);
-
-        if (null != receivers) {
+        String[] receivers = userSer.findAllByField("id");
+        if (null != receivers) { //公共消息
             for (int i = 0; i < receivers.length; i++) {
                 redisClient.appendToList(receivers[i] + UNREAD_MSG, 30 * 24 * 60 * 60, message_id); //未读消息保存一个月
             }
@@ -208,7 +225,7 @@ public class MessageImpl extends ServiceImpl<Message, MessageDTO> implements Mes
 
     }
 
-    private void initMsg(MessageTO messageTO) {
+    private void initMsg(MessageTO messageTO, MsgType msgType) {
         if (StringUtils.isBlank(messageTO.getCreateTime())) {
             messageTO.setCreateTime(DateUtil.dateToString(LocalDateTime.now()));
         }
@@ -223,8 +240,7 @@ public class MessageImpl extends ServiceImpl<Message, MessageDTO> implements Mes
             }
 
         }
-        messageTO.setMsgType(null != messageTO.getMsgType() ? messageTO.getMsgType() : MsgType.SYS);
-        messageTO.setSendType(null != messageTO.getSendType() ? messageTO.getSendType() : SendType.MSG);
+        messageTO.setMsgType(null != messageTO.getMsgType() ? messageTO.getMsgType() : msgType);
         messageTO.setRangeType(null != messageTO.getRangeType() ? messageTO.getRangeType() : RangeType.SPECIFIED);
     }
 

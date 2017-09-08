@@ -119,7 +119,6 @@ public class ChatSerImpl implements ChatSer {
                 sendMsg(msg, userId);
                 msgSer.remove(msg);
             }
-
         }
     }
 
@@ -129,7 +128,7 @@ public class ChatSerImpl implements ChatSer {
      * @param msg
      * @throws SerException
      */
-    private void sendMsg(Msg msg, String receiver) throws SerException {
+    public void sendMsg(Msg msg, String receiver) throws SerException {
         Session session = null;
         Client client = ChatSession.get(receiver);
         msg.setCreateTime(LocalDateTime.now());

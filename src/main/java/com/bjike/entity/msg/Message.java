@@ -5,7 +5,6 @@ package com.bjike.entity.msg;
 import com.bjike.entity.BaseEntity;
 import com.bjike.type.msg.MsgType;
 import com.bjike.type.msg.RangeType;
-import com.bjike.type.msg.SendType;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -53,11 +52,7 @@ public class Message extends BaseEntity {
      */
     @Column(name = "msgType", columnDefinition = "TINYINT(1) DEFAULT 0 COMMENT '消息类型' ", nullable = false, insertable = false)
     private MsgType msgType;
-    /**
-     * 发送类型
-     */
-    @Column(name = "sendType", columnDefinition = "TINYINT(1) DEFAULT 0 COMMENT '发送类型' ", nullable = false, insertable = false)
-    private SendType sendType;
+
     /**
      * 消息范围
      */
@@ -105,13 +100,6 @@ public class Message extends BaseEntity {
         this.msgType = msgType;
     }
 
-    public SendType getSendType() {
-        return sendType;
-    }
-
-    public void setSendType(SendType sendType) {
-        this.sendType = sendType;
-    }
 
     public RangeType getRangeType() {
         return rangeType;

@@ -6,7 +6,6 @@ import com.bjike.common.aspect.EDIT;
 import com.bjike.to.BaseTO;
 import com.bjike.type.msg.MsgType;
 import com.bjike.type.msg.RangeType;
-import com.bjike.type.msg.SendType;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
@@ -45,13 +44,6 @@ public class MessageTO extends BaseTO {
      */
     @NotBlank(message = "消息类型不能为空", groups = {EDIT.class})
     private MsgType msgType;
-
-    /**
-     * 发送类型:[消息:MSG(默认),邮件:EMAIL,消息及邮件：ALL]
-     */
-    @NotBlank(message = "发送类型不能为空", groups = {EDIT.class})
-
-    private SendType sendType;
 
     /**
      * 消息范围:[个人或多人消息:SPECIFIED(默认)，公共消息:PUB，组消息:GROUP]
@@ -133,13 +125,6 @@ public class MessageTO extends BaseTO {
         this.msgType = msgType;
     }
 
-    public SendType getSendType() {
-        return sendType;
-    }
-
-    public void setSendType(SendType sendType) {
-        this.sendType = sendType;
-    }
 
     public RangeType getRangeType() {
         return rangeType;

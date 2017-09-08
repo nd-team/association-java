@@ -65,17 +65,19 @@ dependencies {
     compile group: 'org.apache.commons', name: 'commons-lang3', version: "$commons_lang_version"
     compile group: 'com.alibaba', name: 'fastjson', version: "$fastjson_version"
     compile group: 'com.google.guava', name: 'guava', version: "$guava_version"
+    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: "$httpclient_version"
+    //缩略图
+    compile group: 'net.coobird', name: 'thumbnailator', version: "$thumbnailator_version"
+    //二维码
     compile group: 'com.google.zxing', name: 'core', version: "$zxing_version"
     compile group: 'com.google.zxing', name: 'javase', version: "$zxing_version"
-    compile group: 'net.coobird', name: 'thumbnailator', version: "$thumbnailator_version"
-    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: "$httpclient_version"
-    // poi
+    //excel
     compile group: 'org.apache.poi', name: 'poi', version: "$poi_version"
     compile group: 'org.apache.poi', name: 'poi-ooxml', version: "$poi_version"
-    compile(group: 'org.apache.kafka', name: 'kafka_2.10', version: '0.10.2.0') {
-        exclude group: 'org.slf4j', module: 'slf4j-log4j12'
-    }
-    compile(group: 'org.apache.commons', name: 'commons-email', version: '1.4') {
+    //邮件
+    compile(group: 'org.apache.commons', name: 'commons-email', version: "$email_version")
+    //消息
+    compile(group: 'org.apache.kafka', name: 'kafka_2.10', version: "$kafka_version") {
         exclude group: 'org.slf4j', module: 'slf4j-log4j12'
     }
 }

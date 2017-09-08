@@ -10,26 +10,31 @@ package com.bjike.type.msg;
  * @Copy: [com.bjike]
  */
 public enum MsgType {
+
     /**
-     * 系统
+     * 推送消息
      */
-    SYS(0),
+    PUSH(0),
+    /**
+     * 系统通知
+     */
+    SYS(1),
     /**
      * 点对点
      */
-    POINT(1),
+    POINT(2),
     /**
      * 群发
      */
-    GROUP(2),
+    GROUP(3),
     /**
      * 上线通知
      */
-    ONLINE(3),
+    ONLINE(4),
     /**
      * 下线通知
      */
-    OFFLINE(4),
+    OFFLINE(5),
     /**
      * 加好友通知
      */
