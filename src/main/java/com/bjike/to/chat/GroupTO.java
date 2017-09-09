@@ -1,6 +1,9 @@
 package com.bjike.to.chat;
 
+import com.bjike.common.aspect.ADD;
+import com.bjike.common.aspect.EDIT;
 import com.bjike.to.BaseTO;
+import org.hibernate.validator.constraints.NotBlank;
 
 /**
  * 群传输对象
@@ -15,12 +18,9 @@ public class GroupTO extends BaseTO {
     /**
      * 群名
      */
+    @NotBlank(message = "群名不能为空", groups = {ADD.class, EDIT.class})
     private String name;
 
-    /**
-     * 创建人
-     */
-    private String userId;
     /**
      * 群描述
      */
@@ -34,13 +34,6 @@ public class GroupTO extends BaseTO {
         this.name = name;
     }
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
 
     public String getDescription() {
         return description;

@@ -14,7 +14,6 @@ import com.bjike.ser.ServiceImpl;
 import com.bjike.to.taxi.DriverTO;
 import com.bjike.type.taxi.VerifyType;
 import com.bjike.vo.taxi.DriverVO;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,29 +44,34 @@ public class DriverSerImpl extends ServiceImpl<Driver, DriverDTO> implements Dri
             User user = UserUtil.currentUser(false);
             dto.getConditions().add(Restrict.eq("user.id", user.getId()));
             if (null == super.findOne(dto)) {
-                Driver driver = BeanCopy.copyProperties(to, Driver.class);
+                Driver driver = BeanCopy.copyProperties(to, Driver.class,true);
                 driver.setVerifyType(VerifyType.PENDING);
                 driver.setUser(user);
-                super.update(driver);
-                List<DrivingLicence> drivingLicences = new ArrayList<>();
-                for (File file : files) {
-                    DrivingLicence drivingLicence = new DrivingLicence();
-                    drivingLicence.setDriver(driver);
-                    drivingLicence.setImage(FileUtil.getDbPath(file.getPath()));
-                    drivingLicences.add(drivingLicence);
+                super.save(driver);
+                if (null != files) {
+                    List<DrivingLicence> drivingLicences = new ArrayList<>(files.size());
+                    for (File file : files) {
+                        DrivingLicence drivingLicence = new DrivingLicence();
+                        drivingLicence.setDriver(driver);
+                        drivingLicence.setImage(FileUtil.getDbPath(file.getPath()));
+                        drivingLicences.add(drivingLicence);
+                    }
+                    drivingLicenceSer.save(drivingLicences);
                 }
-                drivingLicenceSer.save(drivingLicences);
+
                 return true;
             } else {
                 throw new SerException("对不起,你已经申请过了");
             }
 
         } catch (Exception e) {
-            for (File file : files) {
-                file.delete();
+            if(null!=files){
+                for (File file : files) {
+                    file.delete();
+                }
             }
+            throw  new SerException(e.getMessage());
         }
-        return false;
     }
 
     @Transactional
@@ -77,15 +81,15 @@ public class DriverSerImpl extends ServiceImpl<Driver, DriverDTO> implements Dri
         User user = UserUtil.currentUser(false);
         dto.getConditions().add(Restrict.eq("user.id", user.getId()));
         Driver driver = super.findOne(dto);
-        if (null !=driver) {
+        if (null != driver) {
             DrivingLicenceDTO licenceDTO = new DrivingLicenceDTO();
-            licenceDTO.getConditions().add(Restrict.eq("driver.id",driver.getId()));
+            licenceDTO.getConditions().add(Restrict.eq("driver.id", driver.getId()));
             List<DrivingLicence> drivingLicences = drivingLicenceSer.findByCis(licenceDTO);
-            if(null!=drivingLicences && drivingLicences.size()>0){ //删除之前上传的照片,如果存在
+            if (null != drivingLicences && drivingLicences.size() > 0) { //删除之前上传的照片,如果存在
 
-                for(DrivingLicence licence: drivingLicences){
+                for (DrivingLicence licence : drivingLicences) {
                     File f = new File(FileUtil.getRealPath(licence.getImage()));
-                    if(f.exists()){
+                    if (f.exists()) {
                         f.delete();
                     }
                 }

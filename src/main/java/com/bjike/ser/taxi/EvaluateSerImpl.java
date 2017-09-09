@@ -47,19 +47,24 @@ public class EvaluateSerImpl extends ServiceImpl<Evaluate, EvaluateDTO> implemen
             evaluate.setUser(UserUtil.currentUser(false));
             evaluate.setTaxiOrder(taxiOrder);
             super.save(evaluate);
-            List<EvaluatePicture> evaluatePictures = new ArrayList<>(files.size());
-            for (File file : files) {
-                String path = FileUtil.getDbPath(file.getPath());
-                EvaluatePicture picture = new EvaluatePicture();
-                picture.setEvaluate(evaluate);
-                picture.setImage(path);
-                evaluatePictures.add(picture);
+            if(null!=files){
+                List<EvaluatePicture> evaluatePictures = new ArrayList<>(files.size());
+                for (File file : files) {
+                    String path = FileUtil.getDbPath(file.getPath());
+                    EvaluatePicture picture = new EvaluatePicture();
+                    picture.setEvaluate(evaluate);
+                    picture.setImage(path);
+                    evaluatePictures.add(picture);
+                }
+                evaluatePictureSer.save(evaluatePictures); //保存图片
             }
-            evaluatePictureSer.save(evaluatePictures); //保存图片
+
         } else {
-            for (File file : files) {
-                if (file.exists()) {
-                    file.delete();
+            if(null!=files){
+                for (File file : files) {
+                    if (file.exists()) {
+                        file.delete();
+                    }
                 }
             }
             throw new SerException("该订单不存在");

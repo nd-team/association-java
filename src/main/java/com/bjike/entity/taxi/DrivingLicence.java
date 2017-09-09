@@ -1,9 +1,8 @@
 package com.bjike.entity.taxi;
 
 import com.bjike.entity.BaseEntity;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+
+import javax.persistence.*;
 
 /**
  * 测试实体
@@ -21,7 +20,8 @@ public class DrivingLicence extends BaseEntity{
     /**
      * 所属人
      */
-    @Column(columnDefinition = "VARCHAR(255) COMMENT '所属人' " ,nullable = false)
+	@ManyToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY)
+	@JoinColumn(name = "driver_id", columnDefinition = "VARCHAR(36) COMMENT '所属人' ", nullable = false)
  	private Driver driver;
     /**
      * 驾驶证照片

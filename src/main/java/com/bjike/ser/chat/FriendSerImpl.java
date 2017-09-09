@@ -37,15 +37,20 @@ public class FriendSerImpl extends ServiceImpl<Friend, FriendDTO> implements Fri
     @Transactional
     @Override
     public void add(FriendTO to) throws SerException {
-        String userId = UserUtil.currentUserID();
+        User user= UserUtil.currentUser(false);
         if (null != userSer.findById(to.getFriendId())) {
             FriendDTO dto = new FriendDTO();
-            dto.getConditions().add(Restrict.eq("user.id", userId));
+            dto.getConditions().add(Restrict.eq("user.id", user.getId()));
             dto.getConditions().add(Restrict.eq("friend.id", to.getFriendId()));
             Friend friend = super.findOne(dto);
             if (null == friend) {
                 friend = BeanCopy.copyProperties(to, Friend.class);
                 super.save(friend);
+                Friend f = new Friend();
+                f.setFriend(user);
+                f.setUser(friend.getFriend());
+                f.setApplyType(ApplyType.PASS);
+                super.save(f);
             } else {
                 throw new SerException("对方已是您的好友");
             }
@@ -64,6 +69,8 @@ public class FriendSerImpl extends ServiceImpl<Friend, FriendDTO> implements Fri
         Friend friend = super.findOne(dto);
         if (null != friend) {
             super.remove(friend);
+        } else {
+            throw new SerException("该好友信息不存在");
         }
         /**
          * 对方好友列表把自己移除
@@ -74,12 +81,14 @@ public class FriendSerImpl extends ServiceImpl<Friend, FriendDTO> implements Fri
         friend = super.findOne(dto);
         if (null != friend) {
             super.remove(friend);
+        } else {
+            throw new SerException("该好友信息不存在");
         }
     }
 
     @Override
     public List<FriendGroupVO> groupInfo(String userId) throws SerException {
-        String sql = " select a.id,a.name,b.counts from ike_chat_friend_group a,( " +
+        String sql = " select a.id,a.name,b.counts from chat_friend_group a,( " +
                 " select friend_group_id,count(friend_group_id) as counts from chat_friend where apply_type=1 and user_id='" + userId + "' group by friend_group_id  )b " +
                 "where a.id=b.friend_group_id" +
                 " union " +
@@ -91,10 +100,10 @@ public class FriendSerImpl extends ServiceImpl<Friend, FriendDTO> implements Fri
 
     @Override
     public List<FriendVO> list(String userId) throws SerException {
-        String sql = "select b.id ,b.nickname,a.remark,b.head_path as headPath "+
-        ",a.friend_group_id as friendGroupId from "+
-        "(select remark,friend_id,friend_group_id  from chat_friend where "+
-                "user_id='"+userId+"' )a,"+
+        String sql = "select b.id ,b.nickname,a.remark,b.head_path as headPath " +
+                ",a.friend_group_id as friendGroupId from " +
+                "(select remark,friend_id,friend_group_id  from chat_friend where " +
+                "user_id='" + userId + "' )a," +
                 "user b where a.friend_id =b.id order by a.friend_group_id desc";
         List<FriendVO> friendVOS = super.findBySql(sql, FriendVO.class, new String[]{"id", "nickname", "remark", "headPath", "friendGroupId"});
         for (FriendVO vo : friendVOS) {
@@ -120,7 +129,7 @@ public class FriendSerImpl extends ServiceImpl<Friend, FriendDTO> implements Fri
     @Transactional
     @Override
     public void agree(String friendId) throws SerException {
-        User me= UserUtil.currentUser();
+        User me = UserUtil.currentUser();
         FriendDTO dto = new FriendDTO();
         dto.getConditions().add(Restrict.eq("user.id", me.getId()));
         dto.getConditions().add(Restrict.eq("friend.id", friendId));
@@ -134,7 +143,8 @@ public class FriendSerImpl extends ServiceImpl<Friend, FriendDTO> implements Fri
             fd.setFriend(me);
             fd.setApplyType(ApplyType.PASS);
             super.save(friend);
-
+        } else {
+            throw new SerException("该好友信息不存在");
         }
     }
 
@@ -148,6 +158,8 @@ public class FriendSerImpl extends ServiceImpl<Friend, FriendDTO> implements Fri
         if (null != friend) {
             friend.setApplyType(ApplyType.REFUSE);
             super.update(friend);
+        } else {
+            throw new SerException("该好友信息不存在");
         }
     }
 
@@ -162,7 +174,7 @@ public class FriendSerImpl extends ServiceImpl<Friend, FriendDTO> implements Fri
 
         String sql = "select * from(select b.id,b.nickname,a.remark,b.head_path as headPath,a.friend_group_id as friendGroupId,a.apply_type as applyType" +
                 " from  chat_friend a " +
-                " left join  ike_user b on a.user_id = b.tu_id " + coin +
+                " left join  user b on a.user_id = b.id " + coin +
                 " and a.user_id='" + userId + "' " +
                 " order by a.friend_group_id desc)a  where a.id is not null";
         List<FriendVO> friendVOS = super.findBySql(sql, FriendVO.class, new String[]{"id", "nickname", "remark", "headPath", "friendGroupId", "applyType"});
@@ -182,7 +194,7 @@ public class FriendSerImpl extends ServiceImpl<Friend, FriendDTO> implements Fri
     public List<FriendVO> friendGroup(String id) throws SerException {
         String sql = "select *  from(select c.nickname,b.remark,c.head_path as headPath,a.id as friendGroupId from " +
                 " chat_friend_group a left join chat_friend b on a.user_id=b.user_id and b.apply_type=1 " +
-                " left join ike_user c on c.id=b.user_id )a where a.friendGroupId" +
+                " left join user c on c.id=b.user_id )a where a.friendGroupId" +
                 "='" + id + "'";
         return super.findBySql(sql, FriendVO.class, new String[]{"nickname", "remark", "headPath", "friendGroupId"});
 

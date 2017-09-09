@@ -6,9 +6,7 @@ import com.bjike.common.exception.SerException;
 import com.bjike.common.interceptor.login.LoginAuth;
 import com.bjike.common.restful.ActResult;
 import com.bjike.common.restful.Result;
-import com.bjike.common.util.UserUtil;
 import com.bjike.common.util.bean.BeanCopy;
-import com.bjike.common.util.date.DateUtil;
 import com.bjike.common.util.file.FileUtil;
 import com.bjike.dto.comment.CommentDTO;
 import com.bjike.entity.comment.Comment;
@@ -23,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
-import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -53,8 +50,8 @@ public class CommentAct {
     @PostMapping("add")
     public Result add(@Validated(ADD.class) CommentTO to, BindingResult result, HttpServletRequest request) throws ActException {
         try {
-            String path =FileUtil.getModulePath("comment",true);
-            List<File> files = FileUtil.save(request,path);
+            String path = FileUtil.getModulePath("comment", true);
+            List<File> files = FileUtil.save(request, path);
             Comment comment = commentSer.add(to, files);
             CommentVO vo = BeanCopy.copyProperties(comment, CommentVO.class);
             return ActResult.initialize(vo);
@@ -71,9 +68,10 @@ public class CommentAct {
      * @return class CommentVO
      * @version v1
      */
-    @GetMapping("list")
-    public Result list(CommentDTO dto) throws ActException {
+    @GetMapping("list/{pointId}")
+    public Result list(@PathVariable String pointId, CommentDTO dto) throws ActException {
         try {
+            dto.setPointId(pointId);
             List<CommentVO> vos = commentSer.list(dto);
             return ActResult.initialize(vos);
 
@@ -89,8 +87,8 @@ public class CommentAct {
      * @return {name:'data',type:'int',defaultValue:'',description:'点评量.'}
      * @version v1
      */
-    @GetMapping("count")
-    public Result count(String pointId) throws ActException {
+    @GetMapping("count/{pointId}")
+    public Result count(@PathVariable String pointId) throws ActException {
         try {
             return ActResult.initialize(commentSer.count(pointId));
         } catch (SerException e) {
@@ -146,6 +144,7 @@ public class CommentAct {
     @DeleteMapping("delete/{commentId}")
     public Result delete(@PathVariable String commentId) throws ActException {
         try {
+
             commentSer.remove(commentId);
             return new ActResult("success");
         } catch (SerException e) {
@@ -181,7 +180,7 @@ public class CommentAct {
     @PostMapping("upload/img/{commentId}")
     public Result uploadImg(@PathVariable String commentId, HttpServletRequest request) throws ActException {
         try {
-            String path =FileUtil.getModulePath("comment",true);
+            String path = FileUtil.getModulePath("comment", true);
             List<File> files = FileUtil.save(request, path);
             commentSer.uploadImg(commentId, files);
             return new ActResult("success");
@@ -208,7 +207,6 @@ public class CommentAct {
         }
 
     }
-
 
 
 }

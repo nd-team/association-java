@@ -68,6 +68,7 @@ public class RecommendSerImpl extends ServiceImpl<Recommend, RecommendDTO> imple
             RecommendVO vo = new RecommendVO();
             vo.setNickname(recommend.getRealName());
             vo.setInviteCode(recommend.getInviteCode());
+            recommendVOS.add(vo);
         }
         return recommendVOS;
     }

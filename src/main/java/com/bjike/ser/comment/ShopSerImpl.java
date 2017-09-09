@@ -2,6 +2,7 @@ package com.bjike.ser.comment;
 
 import com.bjike.common.exception.SerException;
 import com.bjike.dto.comment.ShopDTO;
+import com.bjike.entity.comment.Comment;
 import com.bjike.entity.comment.Shop;
 import com.bjike.ser.ServiceImpl;
 import com.bjike.vo.comment.ShopVO;
@@ -53,5 +54,11 @@ public class ShopSerImpl extends ServiceImpl<Shop, ShopDTO> implements ShopSer {
             }
         }
         return vos;
+    }
+
+    @Override
+    public void remove(String id) throws SerException {
+        super.executeSql("delete from "+getTableName(Comment.class)+" where shop.id='"+id+"'");
+        super.remove(id);
     }
 }

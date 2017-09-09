@@ -141,11 +141,16 @@ public class MessageImpl extends ServiceImpl<Message, MessageDTO> implements Mes
         UserMessageDTO dto = new UserMessageDTO();
         dto.getConditions().add(Restrict.eq("message.id", messageId));
         UserMessage userMessage = userMessageSer.findOne(dto);
-        if (null != userMessage) {
-            userMessage.setRead(true);
-            userMessageSer.update(userMessage);
+        if(userMessage.getUser().getId().equals(userId)){
+            if (null != userMessage) {
+                userMessage.setRead(true);
+                userMessageSer.update(userMessage);
+            }
+            redisClient.removeToList(userId + UNREAD_MSG, messageId); //从用户消息列表移除
+        }else {
+            throw  new SerException("读取消息错误");
         }
-        redisClient.removeToList(userId + UNREAD_MSG, messageId); //从用户消息列表移除
+
     }
 
     @Override

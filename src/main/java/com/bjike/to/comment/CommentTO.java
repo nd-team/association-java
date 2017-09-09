@@ -31,7 +31,7 @@ public class CommentTO extends BaseTO {
      */
     private ScoreType scoreType;
     /**
-     * 经纬X坐标
+     * 地点id
      */
     @NotBlank(message = "请填写地点id", groups = {ADD.class, EDIT.class})
     private String pointId;

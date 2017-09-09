@@ -48,11 +48,13 @@ public class CommentSerImpl extends ServiceImpl<Comment, CommentDTO> implements 
     @Autowired
     private UserSer userSer;
 
+    @Transactional
     @Override
     public Comment add(CommentTO to, List<File> files) throws SerException {
         try {
             Comment comment = BeanCopy.copyProperties(to, Comment.class);
-            User user = UserUtil.currentUser(false);;
+            User user = UserUtil.currentUser(false);
+            ;
             comment.setUser(user);
             ShopDTO shopDTO = new ShopDTO();
             shopDTO.getConditions().add(Restrict.eq("pointId", to.getPointId()));
@@ -71,12 +73,16 @@ public class CommentSerImpl extends ServiceImpl<Comment, CommentDTO> implements 
                 comment.setShop(shop);
             }
             super.save(comment);
-            uploadImg(comment.getId(), files);
+            if (null != files) {
+                uploadImg(comment.getId(), files);
+            }
             return comment;
 
         } catch (SerException e) {
-            for (File file : files) {
-                file.delete();
+            if (null != files) {
+                for (File file : files) {
+                    file.delete();
+                }
             }
             throw new SerException(e.getMessage());
         }
@@ -90,11 +96,12 @@ public class CommentSerImpl extends ServiceImpl<Comment, CommentDTO> implements 
         dto.getSorts().add("likes");
         List<Comment> comments = super.findByPage(dto);
         List<CommentVO> vos = BeanCopy.copyProperties(comments, CommentVO.class);
+        String userId = UserUtil.currentUserID();
         if (null != vos) {
             for (CommentVO comment : vos) {
-                comment.setAlreadyLikes(alreadyLike(dto.getUserId()));
+                comment.setAlreadyLikes(alreadyLike(userId));
                 String[] images = getImages(comment.getId());
-                User user = userSer.findById(dto.getUserId());
+                User user = userSer.findById(userId);
                 comment.setNickname(user.getNickname());
                 comment.setHeadPath(user.getHeadPath());
                 comment.setImages(images);
@@ -120,15 +127,17 @@ public class CommentSerImpl extends ServiceImpl<Comment, CommentDTO> implements 
         User user = UserUtil.currentUser(false);
         Comment comment = super.findById(commentId);
         if (null != comment) {
-            comment.setLikes(comment.getLikes() != null ? (comment.getLikes() + 1) : 1);
-            super.update(comment);
             LikesDTO dto = new LikesDTO();
             dto.getConditions().add(Restrict.eq("user.id", user.getId()));
             if (likesSer.findByCis(dto).size() == 0) {
+                comment.setLikes(comment.getLikes() != null ? (comment.getLikes() + 1) : 1);
+                super.update(comment);
                 Likes likes = new Likes();
                 likes.setComment(comment);
                 likes.setUser(user);
                 likesSer.save(likes);
+            } else {
+                throw new SerException("你已经点过赞了");
             }
         } else {
             throw new SerException("该评论不存在或已被删除!");
@@ -176,6 +185,7 @@ public class CommentSerImpl extends ServiceImpl<Comment, CommentDTO> implements 
     }
 
 
+    @Transactional
     @Override
     public void remove(String id) throws SerException {
         PictureDTO dto = new PictureDTO();
@@ -188,6 +198,7 @@ public class CommentSerImpl extends ServiceImpl<Comment, CommentDTO> implements 
             }
         }
         pictureSer.remove(pictures);
+        likesSer.executeSql("delete from " + getTableName(Likes.class) + " where comment_id='" + id + "'");
         super.remove(id);
     }
 

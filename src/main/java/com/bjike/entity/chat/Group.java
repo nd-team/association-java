@@ -27,7 +27,7 @@ public class Group extends BaseEntity {
      * 创建人
      */
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", unique = true, columnDefinition = "VARCHAR(36) COMMENT 创建人id' ", nullable = false)
+    @JoinColumn(name = "user_id", columnDefinition = "VARCHAR(36) COMMENT '创建人id' ", nullable = false)
     private User user;
 
     /**

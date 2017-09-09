@@ -1,5 +1,6 @@
 package com.bjike.act.taxi;
 
+import com.bjike.common.aspect.ADD;
 import com.bjike.common.exception.ActException;
 import com.bjike.common.exception.SerException;
 import com.bjike.common.interceptor.login.LoginAuth;
@@ -14,6 +15,8 @@ import com.bjike.to.taxi.DriverTO;
 import com.bjike.type.taxi.VerifyType;
 import com.bjike.vo.taxi.DriverVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -46,10 +49,13 @@ public class DriverAct {
      * @version v1
      */
     @PostMapping("apply")
-    public Result apply(DriverTO to, HttpServletRequest request) throws ActException {
+    public Result apply(@Validated(ADD.class) DriverTO to, BindingResult result,HttpServletRequest request) throws ActException {
         try {
-            String path =FileUtil.getModulePath("driver",true);
-            List<File> files = FileUtil.save(request, path);
+            List<File> files = null;
+            if(FileUtil.hasFile(request)){
+                String path =FileUtil.getModulePath("driver",true);
+                files = FileUtil.save(request, path);
+            }
             Boolean rs = driverSer.apply(to, files);
             return ActResult.initialize(rs);
         } catch (SerException e) {

@@ -1,6 +1,10 @@
 package com.bjike.dto.comment;
 
+import com.bjike.common.aspect.ADD;
+import com.bjike.common.aspect.EDIT;
 import com.bjike.dto.BaseDTO;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * @Author: [liguiqin]
@@ -11,7 +15,6 @@ import com.bjike.dto.BaseDTO;
  */
 public class CommentDTO extends BaseDTO {
     private String pointId;
-    private String userId;
 
     public String getPointId() {
         return pointId;
@@ -21,11 +24,5 @@ public class CommentDTO extends BaseDTO {
         this.pointId = pointId;
     }
 
-    public String getUserId() {
-        return userId;
-    }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
 }

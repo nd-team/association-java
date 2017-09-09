@@ -1,5 +1,7 @@
 package com.bjike.act.chat;
 
+import com.bjike.common.aspect.ADD;
+import com.bjike.common.aspect.EDIT;
 import com.bjike.common.exception.ActException;
 import com.bjike.common.exception.SerException;
 import com.bjike.common.interceptor.login.LoginAuth;
@@ -12,6 +14,8 @@ import com.bjike.ser.chat.GroupSer;
 import com.bjike.to.chat.GroupTO;
 import com.bjike.vo.chat.FriendVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -81,7 +85,7 @@ public class GroupAct {
      * @version v1
      */
     @PostMapping("add")
-    public Result add(GroupTO to) throws ActException {
+    public Result add(@Validated(ADD.class) GroupTO to, BindingResult rs) throws ActException {
         try {
             groupSer.add(to);
             return new ActResult("add success");
@@ -102,7 +106,7 @@ public class GroupAct {
     public Result delete(@PathVariable String id) throws ActException {
         try {
             groupSer.remove(id);
-            return new ActResult("delete sueecss");
+            return new ActResult("delete success");
         } catch (SerException e) {
             throw new ActException(e.getMessage());
         }
@@ -116,7 +120,7 @@ public class GroupAct {
      * @version v1
      */
     @PutMapping("edit")
-    public Result edit(GroupTO to) throws ActException {
+    public Result edit(@Validated(EDIT.class) GroupTO to,BindingResult rs) throws ActException {
         try {
             groupSer.edit(to);
             return new ActResult("edit success");

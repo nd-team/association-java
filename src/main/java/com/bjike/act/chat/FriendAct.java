@@ -1,5 +1,6 @@
 package com.bjike.act.chat;
 
+import com.bjike.common.aspect.ADD;
 import com.bjike.common.exception.ActException;
 import com.bjike.common.exception.SerException;
 import com.bjike.common.interceptor.login.LoginAuth;
@@ -12,6 +13,8 @@ import com.bjike.type.chat.ApplyType;
 import com.bjike.vo.chat.FriendGroupVO;
 import com.bjike.vo.chat.FriendVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -113,7 +116,7 @@ public class FriendAct {
      * @version v1
      */
     @PostMapping("apply")
-    public Result apply(FriendTO to) throws ActException {
+    public Result apply(@Validated(ADD.class) FriendTO to, BindingResult rs) throws ActException {
         try {
             friendSer.add(to);
             return new ActResult("apply success");
@@ -130,8 +133,8 @@ public class FriendAct {
      * @throws ActException
      * @version v1
      */
-    @PutMapping("agree")
-    public Result agree(String friendId) throws ActException {
+    @PutMapping("agree/{friendId}")
+    public Result agree(@PathVariable String friendId) throws ActException {
         try {
             friendSer.agree(friendId);
             return new ActResult("agree success");
@@ -147,8 +150,8 @@ public class FriendAct {
      * @param friendId 好友id
      * @version v1
      */
-    @PutMapping("refuse")
-    public Result refuse(String friendId) throws ActException {
+    @PutMapping("refuse/{friendId}")
+    public Result refuse(@PathVariable String friendId) throws ActException {
         try {
             friendSer.refuse(friendId);
             return new ActResult("refuse success");

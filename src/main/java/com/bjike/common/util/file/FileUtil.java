@@ -83,16 +83,26 @@ public class FileUtil {
                     throw new SerException("path存储路径不能为空");
                 }
             } else {
-                LOGGER.info("上传文件为空");
-                return new ArrayList<>(0);
+                throw new SerException("上传文件为空");
             }
         } else {
-            LOGGER.info("不符合文件上传格式");
-            return new ArrayList<>(0);
+            throw new SerException("不符合文件上传格式");
         }
 
     }
 
+    public static boolean hasFile(HttpServletRequest request)throws SerException{
+        if(null!=request){
+            if(isMultipartContent(request)){
+                List<MultipartFile> multipartFiles = getMultipartFile(request);
+                if(multipartFiles.size()>0){
+                    return true;
+                }
+            }
+        }
+        return false;
+
+    }
 
     /**
      * 字节转文件

@@ -11,10 +11,7 @@ import com.bjike.entity.comment.Shop;
 import com.bjike.ser.comment.ShopSer;
 import com.bjike.vo.comment.ShopVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -59,8 +56,8 @@ public class ShopAct {
      * @return {name:'data',type:'string',defaultValue:'',description:'delete success.'}
      * @version v1
      */
-    @DeleteMapping("del")
-    public Result del(String pointId) throws ActException {
+    @DeleteMapping("del/{pointId}")
+    public Result del(@PathVariable String pointId) throws ActException {
         try {
             ShopDTO dto = new ShopDTO();
             dto.getConditions().add(Restrict.eq("pointId", pointId));

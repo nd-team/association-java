@@ -1,5 +1,9 @@
 package com.bjike.to.chat;
 
+import com.bjike.common.aspect.ADD;
+import com.bjike.common.aspect.EDIT;
+import org.hibernate.validator.constraints.NotBlank;
+
 /**
  * 好友传输对象
  *
@@ -10,26 +14,16 @@ package com.bjike.to.chat;
  * @Copy: [com.bjike]
  */
 public class FriendTO {
+
     /**
-     * 用户id
+     * 好友id
      */
-    private String userId;
-    /**
-     * 朋友id
-     */
+    @NotBlank(message = "好友id不能为空", groups = {ADD.class, EDIT.class})
     private String friendId;
     /**
      * 备注
      */
     private String remark;
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
 
     public String getFriendId() {
         return friendId;

@@ -10,6 +10,7 @@ import com.bjike.entity.user.User;
 import com.bjike.ser.ServiceImpl;
 import com.bjike.to.chat.FriendGroupTO;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @Author: [liguiqin]
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class FriendGroupSerImpl extends ServiceImpl<FriendGroup, FriendGroupDTO> implements FriendGroupSer {
 
+    @Transactional
     @Override
     public void add(FriendGroupTO to) throws SerException {
         FriendGroupDTO dto = new FriendGroupDTO();

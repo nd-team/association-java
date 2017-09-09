@@ -51,7 +51,7 @@ public class TaxiOrderSerImpl extends ServiceImpl<TaxiOrder, TaxiOrderDTO> imple
     public Boolean taking(String orderId) throws SerException {
         TaxiOrderDTO dto = new TaxiOrderDTO();
         dto.getConditions().add(Restrict.eq("id", orderId));
-        dto.getConditions().add(Restrict.eq("received", false));
+        dto.getConditions().add(Restrict.eq("status", OrderStatus.PENDING));
         TaxiOrder taxiOrder = super.findOne(dto);
         if (null != taxiOrder) {
             taxiOrder.setStatus(OrderStatus.RECEIVED);
@@ -76,7 +76,7 @@ public class TaxiOrderSerImpl extends ServiceImpl<TaxiOrder, TaxiOrderDTO> imple
 
         String sql = " select a.id,a.start_point as startPoint,a.destination ,b.nickname,b.head_path as headPath ,b.sex_type as sexType, " +
                 " a.longitude,a.latitude from taxi_order a" +
-                " ,user b where a.user_id=b.id longitude>=? and longitude <=? and latitude>=? and latitude<=? and a.status=0";
+                " ,user b where a.user_id=b.id and longitude>='%s' and longitude <='%s' and latitude>='%s' and latitude<='%s' and a.status=0";
         sql = String.format(sql, minlng, maxlng, minlat, maxlat);
         String[] fields = new String[]{"id", "startPoint", "destination", "nickname", "headPath", "sexType", "longitude", "latitude",};
         List<NearbyVO> nearbyVOS = super.findBySql(sql, TaxiOrderVO.class, fields);

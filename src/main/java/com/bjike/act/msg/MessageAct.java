@@ -8,6 +8,7 @@ import com.bjike.common.exception.SerException;
 import com.bjike.common.interceptor.login.LoginAuth;
 import com.bjike.common.restful.ActResult;
 import com.bjike.common.restful.Result;
+import com.bjike.common.util.UserUtil;
 import com.bjike.common.util.bean.BeanCopy;
 import com.bjike.dto.msg.MessageDTO;
 import com.bjike.entity.msg.Message;
@@ -115,14 +116,14 @@ public class MessageAct {
     /**
      * 未读消息
      *
-     * @param id 用户id
      * @throws ActException
      * @version v1
      */
     @GetMapping("list/unread")
-    public Result unreadMessages(@PathVariable String id, MsgType msgType, HttpServletRequest request) throws ActException {
+    public Result unreadMessages( MsgType msgType, HttpServletRequest request) throws ActException {
         try {
-            List<Message> messages = messageSer.unreadList(id, msgType);
+            String userId = UserUtil.currentUserID();
+            List<Message> messages = messageSer.unreadList(userId, msgType);
             List<MessageVO> vos = BeanCopy.copyProperties(messages, MessageVO.class, request);
             return ActResult.initialize(vos);
         } catch (SerException e) {

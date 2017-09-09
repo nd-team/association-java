@@ -20,7 +20,7 @@ public class Likes extends BaseEntity {
     /**
      * 点评
      */
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "comment_id", columnDefinition = "VARCHAR(36) COMMENT '点评id' ", nullable = false)
     private Comment comment;
     /**
