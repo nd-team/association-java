@@ -75,7 +75,7 @@ public class Driver extends BaseEntity {
     /**
      * 审核
      */
-    @Column(columnDefinition = "TINYINT(2) COMMENT '审核状态'", nullable = false)
+    @Column(columnDefinition = "TINYINT(2) DEFAULT 0 COMMENT '审核状态'", nullable = false,insertable = false)
     private VerifyType verifyType;
 
     public User getUser() {

@@ -96,11 +96,11 @@ public class UserUtil {
                 String loginUser_str = redis.getMap(UserCommon.LOGIN_USER, token.toString());
                 if (StringUtils.isNotBlank(loginUser_str)) {
                     loginUser = JSON.parseObject(loginUser_str, User.class);
-                    UserSession.put(token.toString(), loginUser); //设置到session
+                    UserSession.put(token, loginUser); //设置到session
                     if(!cache){
                         return userSer.findById(loginUser.getId());
                     }
-
+                    return loginUser;
                 }
             }
             throw new SerException("登录已失效!");

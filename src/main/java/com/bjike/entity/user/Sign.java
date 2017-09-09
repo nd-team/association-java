@@ -28,8 +28,8 @@ public class Sign extends BaseEntity {
     /**
      * 签到日期
      */
-    @Column(name = "signDate", columnDefinition = "DATE COMMENT '签到日期' ", nullable = false)
-    private LocalDate signDate = LocalDate.now();
+    @Column(name = "signDate", columnDefinition = " DATE  COMMENT '签到日期' ", nullable = false)
+    private LocalDate signDate =LocalDate.now();
 
     /**
      * 签到次数

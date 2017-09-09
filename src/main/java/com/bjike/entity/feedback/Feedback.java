@@ -27,7 +27,7 @@ public class Feedback extends BaseEntity {
     /**
      * 反馈内容
      */
-    @Column(columnDefinition = "TEXT COMMENT '反馈内容' ")
+    @Column(columnDefinition = "TEXT COMMENT '反馈内容' " ,nullable = false)
     private String content;
 
 
@@ -40,8 +40,8 @@ public class Feedback extends BaseEntity {
     /**
      * 是否已处理
      */
-    @Column(name = "is_handle", columnDefinition = "TINYINT(1) COMMENT '是否已处理'", nullable = false)
-    private Boolean handle = false;
+    @Column(name = "is_handle", columnDefinition = "TINYINT(1) DEFAULT 0 COMMENT '是否已处理'", nullable = false,insertable = false)
+    private Boolean handle ;
 
     public User getUser() {
         return user;

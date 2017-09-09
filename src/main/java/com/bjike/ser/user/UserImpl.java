@@ -117,7 +117,7 @@ public class UserImpl extends ServiceImpl<User, UserDTO> implements UserSer {
             str_mails = "'" + str_mails + "'";
             sql = "select id form user where email in(" + str_mails + ") and status=0 ";
         } else {
-            sql = "select id form user where email is not null and status=0";
+            sql = "select id from user where email is not null and status=0";
         }
         List<Object> emails = super.findBySql(sql);
         String[] rs = null;
@@ -135,9 +135,9 @@ public class UserImpl extends ServiceImpl<User, UserDTO> implements UserSer {
         if (null != ids) {
             String str_ids = StringUtils.join(ids, "','");
             str_ids = "'" + str_ids + "'";
-            sql = "select email form user where id in(" + str_ids + ") and email is not null and status=0";
+            sql = "select email from user where id in(" + str_ids + ") and email is not null and status=0";
         } else {
-            sql = "select email form user where email is not null and status=0";
+            sql = "select email from user where email is not null and status=0";
         }
         List<Object> emails = super.findBySql(sql);
         String[] rs = null;
@@ -154,7 +154,7 @@ public class UserImpl extends ServiceImpl<User, UserDTO> implements UserSer {
 
     @Override
     public String[] findAllByField(String field) throws SerException {
-        String sql = "select "+field+" form user where  status=0";
+        String sql = "select "+field+" from user where  status=0";
         List<Object> emails = super.findBySql(sql);
         String[] rs = null;
         if (null != emails) {

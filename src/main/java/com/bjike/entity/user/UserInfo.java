@@ -26,17 +26,17 @@ public class UserInfo extends BaseEntity {
     /**
      * 经验值
      */
-    @Column(columnDefinition = "DECIMAL(5,2) COMMENT '经验值'")
+    @Column(columnDefinition = "DECIMAL(5,2)  COMMENT '经验值'")
     private Double experience;
     /**
      * 贡献值
      */
-    @Column(columnDefinition = "DECIMAL(5,2) COMMENT '贡献值'")
+    @Column(columnDefinition = "DECIMAL(5,2)  COMMENT '贡献值'")
     private Double contribute;
     /**
      * 信誉值
      */
-    @Column(columnDefinition = "DECIMAL(3,2) COMMENT '信誉值'")
+    @Column(columnDefinition = "DECIMAL(3,2)  COMMENT '信誉值'")
     private Double reputation;
     /**
      * 真实姓名
@@ -61,7 +61,7 @@ public class UserInfo extends BaseEntity {
     /**
      * 关系
      */
-    @Column(columnDefinition = "TINYINT(1) DEFAULT 0 COMMENT '关系' ")
+    @Column(columnDefinition = "TINYINT(1) COMMENT '关系' ")
     private RelationshipType relationshipType;
     /**
      * 生日
@@ -111,7 +111,7 @@ public class UserInfo extends BaseEntity {
     /**
      * 婚姻状况
      */
-    @Column(name = "is_marriage", columnDefinition = "TINYINT(1) DEFAULT 0 COMMENT '婚姻状况'")
+    @Column(name = "is_marriage", columnDefinition = "TINYINT(1)  COMMENT '婚姻状况'")
     private Boolean marriage;
     /**
      * qq

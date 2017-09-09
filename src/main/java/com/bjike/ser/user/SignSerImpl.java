@@ -88,7 +88,7 @@ public class SignSerImpl extends ServiceImpl<Sign, SignDTO> implements SignSer {
      */
     private void setExperience(String userId, int signCount) throws SerException {
         UserInfo userInfo = userInfoSer.findByUserId(userId);
-        userInfo.setExperience(userInfo.getExperience() + signCount);
+        userInfo.setExperience(userInfo.getExperience()!=null?userInfo.getExperience():0 + signCount);
         userInfoSer.save(userInfo);
     }
 }

@@ -36,13 +36,13 @@ public class Relationship extends BaseEntity {
     /**
      * 朋友关系
      */
-    @Column(columnDefinition = "TINYINT(1) DEFAULT 0 COMMENT '朋友关系' ", nullable = false, insertable = false)
+    @Column(columnDefinition = "TINYINT(1)  COMMENT '朋友关系' ", nullable = false)
     private RelationshipType relationshipType;
     /**
      * 状态
      */
     @Column(columnDefinition = "TINYINT(1) DEFAULT 0 COMMENT '状态' ", nullable = false, insertable = false)
-    private Status status = Status.CONGEAL;
+    private Status status;
 
     /**
      * 关系链列表

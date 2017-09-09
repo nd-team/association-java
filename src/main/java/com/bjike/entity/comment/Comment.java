@@ -40,18 +40,18 @@ public class Comment extends BaseEntity {
     /**
      * 评分
      */
-    @Column(columnDefinition = "TINYINT(2) COMMENT '评分'")
+    @Column(columnDefinition = "TINYINT(2) COMMENT '评分'",nullable = false)
     private ScoreType scoreType;
 
     /**
      * 点赞量
      */
-    @Column(columnDefinition = "INT(8) default 0  COMMENT '点赞量' ", insertable = false)
+    @Column(columnDefinition = "INT(8) default 0  COMMENT '点赞量' ", nullable = false,insertable = false)
     private Integer likes;
     /**
      * 可见范围
      */
-    @Column(columnDefinition = "TINYINT(2) COMMENT '可见范围'")
+    @Column(columnDefinition = "TINYINT(2) COMMENT '可见范围'",nullable = false)
     private VisibleType visibleType;
 
 

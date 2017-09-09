@@ -33,7 +33,7 @@ public class Recommend extends BaseEntity {
     /**
      * 推荐是否成功
      */
-    @Column(name = "is_succeed", columnDefinition = "TINYINT(1) DEFAULT 0 COMMENT '推荐是否成功'",nullable = false)
+    @Column(name = "is_succeed", columnDefinition = "TINYINT(1) DEFAULT 0 COMMENT '推荐是否成功'",nullable = false,insertable = false)
     private Boolean succeed;
 
     /**
@@ -64,7 +64,7 @@ public class Recommend extends BaseEntity {
     /**
      * 关系
      */
-    @Column(columnDefinition = "TINYINT(1) DEFAULT 0 COMMENT '关系' ", nullable = false)
+    @Column(columnDefinition = "TINYINT(1)  COMMENT '关系' ", nullable = false)
     private RelationshipType relationshipType;
     /**
      * 生日
@@ -114,7 +114,7 @@ public class Recommend extends BaseEntity {
     /**
      * 婚姻状况
      */
-    @Column(name = "is_expired", columnDefinition = "TINYINT(1) DEFAULT 0 COMMENT '婚姻状况'")
+    @Column(name = "is_marriage", columnDefinition = "TINYINT(1)  COMMENT '婚姻状况'")
     private Boolean marriage;
     /**
      * qq

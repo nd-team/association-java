@@ -9,6 +9,7 @@ import com.bjike.type.msg.RangeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.time.LocalDateTime;
 
 
 /**
@@ -50,15 +51,14 @@ public class Message extends BaseEntity {
     /**
      * 消息类型
      */
-    @Column(name = "msgType", columnDefinition = "TINYINT(1) DEFAULT 0 COMMENT '消息类型' ", nullable = false, insertable = false)
+    @Column(name = "msgType", columnDefinition = "TINYINT(1) COMMENT '消息类型' ", nullable = false)
     private MsgType msgType;
 
     /**
      * 消息范围
      */
-    @Column(name = "rangeType", columnDefinition = "TINYINT(1) DEFAULT 0 COMMENT '消息范围' ", nullable = false, insertable = false)
+    @Column(name = "rangeType", columnDefinition = "TINYINT(1)  COMMENT '消息范围' ", nullable = false)
     private RangeType rangeType;
-
 
     public String getTitle() {
         return title;

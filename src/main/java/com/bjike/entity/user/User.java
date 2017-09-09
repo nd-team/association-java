@@ -52,7 +52,7 @@ public class User extends BaseEntity {
      * 性别
      */
     @Column(columnDefinition = "TINYINT(1) DEFAULT 0 COMMENT '性别' ", nullable = false, insertable = false)
-    private SexType sexType = SexType.UNKNOWN;
+    private SexType sexType ;
     /**
      * 邮箱
      */
@@ -68,12 +68,12 @@ public class User extends BaseEntity {
      * 状态
      */
     @Column(columnDefinition = "TINYINT(1) DEFAULT 0 COMMENT '状态' ", nullable = false, insertable = false)
-    private Status status = Status.CONGEAL;
+    private Status status ;
     /**
      * 会员类型
      */
     @Column(columnDefinition = "TINYINT(1) DEFAULT 0 COMMENT '会员类型' ", nullable = false, insertable = false)
-    private UserType userType = UserType.ORDINARY;
+    private UserType userType ;
 
 
     public String getUsername() {

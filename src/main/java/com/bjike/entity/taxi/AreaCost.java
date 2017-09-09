@@ -37,7 +37,7 @@ public class AreaCost extends BaseEntity {
     /**
      * 是否启用
      */
-    @Column(name = "is_enable", columnDefinition = "TINYINT(1) DEFAULT 0 COMMENT '是否启用'",nullable = false)
+    @Column(name = "is_enable", columnDefinition = "TINYINT(1) DEFAULT 0 COMMENT '是否启用'",nullable = false,insertable = false)
     private Boolean enable;
 
     public String getArea() {

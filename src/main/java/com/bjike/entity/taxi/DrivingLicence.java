@@ -21,7 +21,7 @@ public class DrivingLicence extends BaseEntity{
     /**
      * 所属人
      */
-    @Column(columnDefinition = "VARCHAR(255) COMMENT '所属人' ")
+    @Column(columnDefinition = "VARCHAR(255) COMMENT '所属人' " ,nullable = false)
  	private Driver driver;
     /**
      * 驾驶证照片

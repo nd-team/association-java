@@ -45,13 +45,13 @@ public abstract class BaseEntity implements Serializable {
      * 创建时间
      */
 
-    @Column(name = "createTime", columnDefinition = "DATETIME  COMMENT '创建时间'", nullable = false)
+    @Column(name = "createTime", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间'", nullable = false,insertable = false)
     protected LocalDateTime createTime = LocalDateTime.now();
 
     /**
      * 更新时间
      */
-    @Column(name = "modifyTime", columnDefinition = "DATETIME COMMENT '更新时间' ", nullable = false)
+    @Column(name = "modifyTime", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间'", nullable = false,insertable = false)
     protected LocalDateTime modifyTime = LocalDateTime.now();
 
 
