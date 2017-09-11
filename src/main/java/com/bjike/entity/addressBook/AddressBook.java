@@ -32,7 +32,7 @@ public class AddressBook extends BaseEntity{
     /**
      * 备注
      */
-    @Column(columnDefinition = "VARCHAR(36) COMMENT '备注' ")
+    @Column(columnDefinition = "VARCHAR(255) COMMENT '备注' ")
     private String remark;
 
     public String getUserId() {
