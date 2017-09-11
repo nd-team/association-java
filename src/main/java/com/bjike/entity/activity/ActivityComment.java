@@ -38,7 +38,7 @@ public class ActivityComment extends BaseEntity {
     /**
      * 评论时间
      */
-    @Column(columnDefinition = "VARCHAR(255) COMMENT '评论时间' ", nullable = false)
+    @Column(columnDefinition = "DATETIME COMMENT '评论时间' ", nullable = false)
     private LocalDateTime time;
     /**
      * 回复评论id
