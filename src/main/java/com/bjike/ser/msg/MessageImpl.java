@@ -82,7 +82,7 @@ public class MessageImpl extends ServiceImpl<Message, MessageDTO> implements Mes
     }
 
     /**
-     * 只能通过id传递
+     * 通过id/mail传递
      *
      * @param messageTO
      * @throws SerException
@@ -90,27 +90,38 @@ public class MessageImpl extends ServiceImpl<Message, MessageDTO> implements Mes
     @Override
     public void pushAndMail(MessageTO messageTO) throws SerException {
 
-        String[] userIds = messageTO.getReceivers();
-        String[] mails = null;
+        String[] receivers = messageTO.getReceivers();
+        String[] userIds = null;
+        String[] mails = filterMail(messageTO.getReceivers());
         MsgType msgType = messageTO.getMsgType() != null ? messageTO.getMsgType() : MsgType.MSG_MAIL;
         RangeType rangeType = messageTO.getRangeType() != null ? messageTO.getRangeType() : RangeType.SPECIFIED;
         if (rangeType.equals(RangeType.PUB) && msgType.equals(MsgType.MAIL)) {  //公共邮件
-            mails = userSer.findAllByField("emails");
+            mails = userSer.findAllByField("email");
         } else if (rangeType.equals(RangeType.SPECIFIED) && msgType.equals(MsgType.MAIL)) { //个人邮件
-            mails = userSer.findMailById(userIds);
+            if (0 == mails.length) { //如果不是邮件,通过邮件获取id
+                mails = userSer.findMailById(receivers);
+            }
         }
         if (rangeType.equals(RangeType.PUB) && msgType.equals(MsgType.MSG)) {  //公共消息
             userIds = userSer.findAllByField("id");
         } else {//个人消息
-            userIds = messageTO.getReceivers();
+            if (0 == mails.length) {//如果不是邮件,则判断为是id
+                userIds = receivers;
+            }
         }
 
         if (msgType.equals(MsgType.MSG_MAIL)) {//个人,功能邮件及消息
             if (rangeType.equals(RangeType.SPECIFIED)) {
-                userIds = messageTO.getReceivers();
-                mails = userSer.findMailById(userIds);
+                if (0 == mails.length) {
+                    mails = userSer.findMailById(receivers);
+                    userIds = receivers;
+                } else {
+                    userIds = userSer.findIdByMail(receivers);
+                    mails = receivers;
+                }
+
             } else if ((rangeType.equals(RangeType.PUB))) {
-                mails = userSer.findAllByField("emails");
+                mails = userSer.findAllByField("email");
                 userIds = userSer.findAllByField("id");
             }
         }
@@ -118,6 +129,8 @@ public class MessageImpl extends ServiceImpl<Message, MessageDTO> implements Mes
             mails = filterMail(mails);
         }
         initMsg(messageTO);
+        messageTO.setMsgType(msgType);
+        messageTO.setRangeType(rangeType);
         Message message = BeanCopy.copyProperties(messageTO, Message.class, true);
         super.save(message); //保存消息到数据库
         if (rangeType.equals(RangeType.SPECIFIED)) { //保存个人消息
@@ -129,7 +142,15 @@ public class MessageImpl extends ServiceImpl<Message, MessageDTO> implements Mes
         //邮件发送
         if (msgType.equals(MsgType.MAIL) || msgType.equals(MsgType.MSG_MAIL)) {
             messageTO.setReceivers(mails);
-            kafkaProducer.produce(messageTO);
+            messageTO.setMsgType(null);
+            messageTO.setRangeType(null);
+            messageTO.setGroups(null);
+            messageTO.setSenderId(null);
+            messageTO.setCreateTime(null);
+            messageTO.setId(null);
+            if (null != mails && mails.length > 0) {
+                kafkaProducer.produce(messageTO);
+            }
         }
 
     }
@@ -141,14 +162,14 @@ public class MessageImpl extends ServiceImpl<Message, MessageDTO> implements Mes
         UserMessageDTO dto = new UserMessageDTO();
         dto.getConditions().add(Restrict.eq("message.id", messageId));
         UserMessage userMessage = userMessageSer.findOne(dto);
-        if(userMessage.getUser().getId().equals(userId)){
+        if (userMessage.getUser().getId().equals(userId)) {
             if (null != userMessage) {
                 userMessage.setRead(true);
                 userMessageSer.update(userMessage);
             }
             redisClient.removeToList(userId + UNREAD_MSG, messageId); //从用户消息列表移除
-        }else {
-            throw  new SerException("读取消息错误");
+        } else {
+            throw new SerException("读取消息错误");
         }
 
     }

@@ -78,7 +78,6 @@ public class FileAct {
      */
     @GetMapping("original/pic")
     public void original(HttpServletResponse response, String path) throws ActException {
-        try {
             String fileName = StringUtils.substringAfterLast(path, "/");
             String suffix = StringUtils.substringAfterLast(path, ".");
             boolean exist = false;
@@ -87,6 +86,7 @@ public class FileAct {
                     exist = true;
                 }
             }
+        try {
             if (exist) {
                 try {
                     byte[] bytes = FileUtil.FileToByte(FileUtil.getRealPath(path));

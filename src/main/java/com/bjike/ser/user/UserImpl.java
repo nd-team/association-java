@@ -72,7 +72,7 @@ public class UserImpl extends ServiceImpl<User, UserDTO> implements UserSer {
         UserInfoDTO dto = new UserInfoDTO();
         dto.getConditions().add(Restrict.eq("user.id", userId));
         UserInfo info = userInfoSer.findOne(dto);
-        User user = UserUtil.currentUser();
+        User user = super.findById(userId);
         BeanCopy.copyProperties(user, userInfoVO);
         BeanCopy.copyProperties(info, userInfoVO, "user");
         userInfoVO.setId(user.getId());
@@ -115,7 +115,7 @@ public class UserImpl extends ServiceImpl<User, UserDTO> implements UserSer {
         if (null != mails) {
             String str_mails = StringUtils.join(mails, "','");
             str_mails = "'" + str_mails + "'";
-            sql = "select id form user where email in(" + str_mails + ") and status=0 ";
+            sql = "select id from user where email in(" + str_mails + ") and status=0 ";
         } else {
             sql = "select id from user where email is not null and status=0";
         }

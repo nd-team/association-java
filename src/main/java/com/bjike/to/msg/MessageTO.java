@@ -8,6 +8,9 @@ import com.bjike.type.msg.MsgType;
 import com.bjike.type.msg.RangeType;
 import org.hibernate.validator.constraints.NotBlank;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * 消息推送
  *
@@ -72,6 +75,21 @@ public class MessageTO extends BaseTO {
      * 接收组
      */
     private String[] groups;
+
+
+    private Map<String, String> imgMap = null;
+    /**
+     * 发送附件地址(邮件)
+     */
+    private List<String> appendixPath = null;
+    /**
+     * 抄送人人(邮件)
+     */
+    private List<String> cc_address = null;
+    /**
+     * 密送人(邮件)
+     */
+    private List<String> bcc_address = null;
 
 
     public String getTitle() {
@@ -145,5 +163,37 @@ public class MessageTO extends BaseTO {
 
     public void setGroups(String[] groups) {
         this.groups = groups;
+    }
+
+    public Map<String, String> getImgMap() {
+        return imgMap;
+    }
+
+    public void setImgMap(Map<String, String> imgMap) {
+        this.imgMap = imgMap;
+    }
+
+    public List<String> getAppendixPath() {
+        return appendixPath;
+    }
+
+    public void setAppendixPath(List<String> appendixPath) {
+        this.appendixPath = appendixPath;
+    }
+
+    public List<String> getCc_address() {
+        return cc_address;
+    }
+
+    public void setCc_address(List<String> cc_address) {
+        this.cc_address = cc_address;
+    }
+
+    public List<String> getBcc_address() {
+        return bcc_address;
+    }
+
+    public void setBcc_address(List<String> bcc_address) {
+        this.bcc_address = bcc_address;
     }
 }

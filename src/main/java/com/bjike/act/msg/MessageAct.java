@@ -77,6 +77,24 @@ public class MessageAct {
     }
 
     /**
+     * 推送消息
+     *
+     * @param messageTO 消息体
+     * @throws ActException
+     * @des 默认为个人邮件(SPECIFIED), 指定PUB则发送所有人员
+     * @version v1
+     */
+    @PostMapping("msgAndMail")
+    public Result msgAndMail(@Validated(ADD.class) MessageTO messageTO, BindingResult result) throws ActException {
+        try {
+            messageSer.pushAndMail(messageTO);
+            return new ActResult("msgAndMail  success!");
+        } catch (SerException e) {
+            throw new ActException(e.getMessage());
+        }
+    }
+
+    /**
      * 读取消息
      *
      * @param id 消息id
