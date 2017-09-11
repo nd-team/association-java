@@ -81,6 +81,7 @@ public class UserAct {
      * @return class UserInfoVO
      * @version v1
      */
+    @LoginAuth
     @GetMapping("find/{userId}")
     public ActResult findByUserId(@PathVariable String userId) throws ActException {
         try {

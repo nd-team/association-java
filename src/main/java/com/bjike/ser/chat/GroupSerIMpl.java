@@ -8,6 +8,7 @@ import com.bjike.entity.chat.Group;
 import com.bjike.entity.chat.GroupMember;
 import com.bjike.ser.ServiceImpl;
 import com.bjike.to.chat.GroupTO;
+import com.bjike.vo.chat.GroupVO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -38,13 +39,22 @@ public class GroupSerIMpl extends ServiceImpl<Group, GroupDTO> implements GroupS
     }
 
     @Override
-    public List<Group> listByUser(String userId) throws SerException {
-        return null;
+    public List<GroupVO> listByUser(String userId) throws SerException {
+        String sql = " select a.id,a.create_time as createTime,a.description,a.head_path as headPath " +
+                " ,a.name ,if(a.user_id='%s','true','false') as own " +
+                " from chat_group a,(" +
+                "select group_id as groupId from chat_group_member   where user_id='%s'" +
+                " union" +
+                " select id as groupId  from chat_group where user_id='%s') b" +
+                " where a.id = b.groupId";
+        sql = String.format(sql, userId,userId,userId);
+        String[] fields = new String[]{"id","createTime","description","headPath","name","own"};
+        return super.findBySql(sql, GroupVO.class,fields);
     }
 
     @Override
     public void remove(String id) throws SerException {
-        super.executeSql("delete from "+getTableName(GroupMember.class)+" where group_id='"+id+"'");
+        super.executeSql("delete from " + getTableName(GroupMember.class) + " where group_id='" + id + "'");
         super.remove(id);
     }
 }

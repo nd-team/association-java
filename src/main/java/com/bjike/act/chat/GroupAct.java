@@ -13,6 +13,7 @@ import com.bjike.ser.chat.FriendSer;
 import com.bjike.ser.chat.GroupSer;
 import com.bjike.to.chat.GroupTO;
 import com.bjike.vo.chat.FriendVO;
+import com.bjike.vo.chat.GroupVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -61,7 +62,7 @@ public class GroupAct {
     /**
      * 我的群列表
      *
-     * @return class Group
+     * @return class GroupVO
      * @throws ActException
      * @version v1
      */
@@ -69,7 +70,7 @@ public class GroupAct {
     public Result listByUser() throws ActException {
         try {
             String userId = UserUtil.currentUserID();
-            List<Group> groups = groupSer.listByUser(userId);
+            List<GroupVO> groups = groupSer.listByUser(userId);
             return ActResult.initialize(groups);
         } catch (SerException e) {
             throw new ActException(e.getMessage());

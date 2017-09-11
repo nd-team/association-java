@@ -6,6 +6,7 @@ import com.bjike.entity.chat.Group;
 import com.bjike.ser.Ser;
 import com.bjike.to.chat.GroupTO;
 import com.bjike.vo.chat.FriendVO;
+import com.bjike.vo.chat.GroupVO;
 
 import java.util.List;
 
@@ -42,7 +43,7 @@ public interface GroupSer extends Ser<Group, GroupDTO> {
      * @return
      * @throws SerException
      */
-    default List<Group> listByUser(String userId) throws SerException {
+    default List<GroupVO> listByUser(String userId) throws SerException {
         return null;
     }
 

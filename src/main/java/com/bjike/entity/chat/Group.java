@@ -18,7 +18,7 @@ import javax.persistence.*;
 @Table(name = "chat_group")
 public class Group extends BaseEntity {
     /**
-     * 聊天室名称
+     * 群名称
      */
     @Column(columnDefinition = "VARCHAR(36) COMMENT '聊天室名称' ", nullable = false)
     private String name;
