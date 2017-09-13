@@ -68,11 +68,17 @@ public class UserImpl extends ServiceImpl<User, UserDTO> implements UserSer {
 
     @Override
     public UserInfoVO userInfo(String userId) throws SerException {
+        /**
+         * 一个奇怪的问题 ,假如是先查询userInfo再查询user,则会出现属性无法查询的问题
+         * 但JSON.toJSONString(user)属性却可以打印出来,debug跟踪及返回页面值为null.
+         * 可以把第一行的[User user = super.findById(userId)注释掉,再打开81行的注释]
+         */
+        User user = super.findById(userId);
         UserInfoVO userInfoVO = new UserInfoVO();
         UserInfoDTO dto = new UserInfoDTO();
         dto.getConditions().add(Restrict.eq("user.id", userId));
         UserInfo info = userInfoSer.findOne(dto);
-        User user = super.findById(userId);
+//        User user = super.findById(userId);
         BeanCopy.copyProperties(user, userInfoVO);
         BeanCopy.copyProperties(info, userInfoVO, "user");
         return userInfoVO;
@@ -150,10 +156,9 @@ public class UserImpl extends ServiceImpl<User, UserDTO> implements UserSer {
     }
 
 
-
     @Override
     public String[] findAllByField(String field) throws SerException {
-        String sql = "select "+field+" from user where  status=0";
+        String sql = "select " + field + " from user where  status=0";
         List<Object> emails = super.findBySql(sql);
         String[] rs = null;
         if (null != emails) {

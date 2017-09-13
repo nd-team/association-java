@@ -69,6 +69,7 @@ public class LoginLogSerImpl extends ServiceImpl<LoginLog, LoginLogDTO> implemen
         dto.getConditions().add(Restrict.eq("user.id", userId));
         dto.getSorts().add("loginTime=DESC");
         return super.findByCis(dto);
+
     }
 
 
