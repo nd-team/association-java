@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.bjike.common.exception.SerException;
 import com.bjike.entity.chat.Client;
 import com.bjike.entity.chat.Msg;
-import com.bjike.entity.msg.Message;
 import com.bjike.ser.chat.ChatSer;
 import com.bjike.ser.msg.MessageSer;
 import com.bjike.session.ChatSession;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Component;
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
-import java.util.List;
 
 /**
  * @Author: [liguiqin]

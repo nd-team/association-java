@@ -27,7 +27,7 @@ public class GroupMember extends BaseEntity {
      * 群成员id
      */
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", unique = true, columnDefinition = "VARCHAR(36) COMMENT 群成员id' ", nullable = false)
+    @JoinColumn(name = "user_id", unique = true, columnDefinition = "VARCHAR(36) COMMENT '群成员id' ", nullable = false)
     private User user;
 
 

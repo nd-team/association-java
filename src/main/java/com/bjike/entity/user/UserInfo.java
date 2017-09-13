@@ -2,6 +2,7 @@ package com.bjike.entity.user;
 
 import com.bjike.entity.BaseEntity;
 import com.bjike.type.user.RelationshipType;
+import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
 
@@ -43,6 +44,12 @@ public class UserInfo extends BaseEntity {
      */
     @Column(columnDefinition = "VARCHAR(30) COMMENT '真实姓名' ")
     private String realName;
+    /**
+     * 邮箱
+     */
+    @Email
+    @Column(columnDefinition = "VARCHAR(30) COMMENT '邮箱' ")
+    private String email;
     /**
      * 联系号码
      */
@@ -293,5 +300,13 @@ public class UserInfo extends BaseEntity {
 
     public void setWeChat(String weChat) {
         this.weChat = weChat;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

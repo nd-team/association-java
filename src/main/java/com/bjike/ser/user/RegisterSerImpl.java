@@ -20,6 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+
 /**
  * @Author: [liguiqin]
  * @Date: [2017-08-22 10:11]
@@ -52,6 +54,7 @@ public class RegisterSerImpl implements RegisterSer {
         user.setNickname(name);
         user.setUserType(userType);
         user.setPhone(to.getPhone());
+        user.setCreateTime(LocalDateTime.now());
         user.setNumber(SeqUtil.genNumber(userSer.findByMaxField("number", User.class)));
         try {
             user.setPassword(PasswordHash.createHash(to.getPassword()));

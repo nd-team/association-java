@@ -8,7 +8,9 @@ import com.bjike.common.interceptor.login.LoginAuth;
 import com.bjike.common.restful.ActResult;
 import com.bjike.common.restful.Result;
 import com.bjike.common.util.UserUtil;
+import com.bjike.common.util.file.FileUtil;
 import com.bjike.entity.chat.Group;
+import com.bjike.entity.user.User;
 import com.bjike.ser.chat.FriendSer;
 import com.bjike.ser.chat.GroupSer;
 import com.bjike.to.chat.GroupTO;
@@ -19,6 +21,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
 import java.util.List;
 
 /**
@@ -95,6 +99,34 @@ public class GroupAct {
         }
 
     }
+
+
+    /**
+     * 头像上传
+     *
+     * @throws ActException
+     * @version v1
+     */
+    @LoginAuth
+    @PostMapping("upload/head/{groupId}")
+    public ActResult uploadHeadPath(@PathVariable String groupId, HttpServletRequest request) throws ActException {
+        try {
+            Group group = groupSer.findById(groupId);
+            if(group.getUser().getId().equals(UserUtil.currentUserID())){
+                List<File> files = FileUtil.save(request, "/" +groupId + "/head");
+                String path = FileUtil.getDbPath(files.get(0).getPath());
+                groupSer.uploadHeadPath(path,group);
+            }else {
+                throw new ActException("您不是群主,没有上传头像权限!");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new ActException("上传头像错误!");
+        }
+        return new ActResult("success");
+    }
+
 
     /**
      * 解散群

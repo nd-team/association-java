@@ -14,7 +14,7 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class SeqUtil {
 
-    private static final String EMP_NUMBER = "ike"; // 非内部员工编号格式
+    private static final String EMP_NUMBER = "IKE"; // 非内部员工编号格式
     private static final String EMP_ZERO = "100000"; // 员工编号开始与位数
 
     /**

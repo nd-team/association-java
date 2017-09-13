@@ -35,6 +35,13 @@ public interface GroupSer extends Ser<Group, GroupDTO> {
      */
     default void edit(GroupTO to) throws SerException {
 
+    }/**
+     * 上传群头像
+     * @param path 头像地址
+     * @throws SerException
+     */
+    default void uploadHeadPath(String path,Group group) throws SerException {
+
     }
 
     /**

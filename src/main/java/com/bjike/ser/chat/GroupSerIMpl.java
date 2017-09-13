@@ -3,14 +3,18 @@ package com.bjike.ser.chat;
 import com.bjike.common.exception.SerException;
 import com.bjike.common.util.UserUtil;
 import com.bjike.common.util.bean.BeanCopy;
+import com.bjike.common.util.file.FileUtil;
 import com.bjike.dto.chat.GroupDTO;
 import com.bjike.entity.chat.Group;
 import com.bjike.entity.chat.GroupMember;
 import com.bjike.ser.ServiceImpl;
 import com.bjike.to.chat.GroupTO;
 import com.bjike.vo.chat.GroupVO;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -38,6 +42,13 @@ public class GroupSerIMpl extends ServiceImpl<Group, GroupDTO> implements GroupS
         }
     }
 
+    @Transactional
+    @Override
+    public void uploadHeadPath(String path, Group group) throws SerException {
+        group.setHeadPath(path);
+        super.update(group);
+    }
+
     @Override
     public List<GroupVO> listByUser(String userId) throws SerException {
         String sql = " select a.id,a.create_time as createTime,a.description,a.head_path as headPath " +
@@ -47,14 +58,21 @@ public class GroupSerIMpl extends ServiceImpl<Group, GroupDTO> implements GroupS
                 " union" +
                 " select id as groupId  from chat_group where user_id='%s') b" +
                 " where a.id = b.groupId";
-        sql = String.format(sql, userId,userId,userId);
-        String[] fields = new String[]{"id","createTime","description","headPath","name","own"};
-        return super.findBySql(sql, GroupVO.class,fields);
+        sql = String.format(sql, userId, userId, userId);
+        String[] fields = new String[]{"id", "createTime", "description", "headPath", "name", "own"};
+        return super.findBySql(sql, GroupVO.class, fields);
     }
 
     @Override
     public void remove(String id) throws SerException {
         super.executeSql("delete from " + getTableName(GroupMember.class) + " where group_id='" + id + "'");
-        super.remove(id);
+        Group group = super.findById(id);
+        if (StringUtils.isNotBlank(group.getHeadPath())) {
+            File file = new File(FileUtil.getRealPath(group.getHeadPath()));
+            if (file.exists()) {
+                file.delete();
+            }
+        }
+        super.remove(group);
     }
 }
