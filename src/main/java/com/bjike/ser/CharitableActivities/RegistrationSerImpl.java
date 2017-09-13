@@ -94,7 +94,7 @@ public class RegistrationSerImpl extends ServiceImpl<Registration, RegistrationD
         if (null != groups && groups.size() > 0) {
             Group group = groups.get(0);
             GroupMember groupMember = new GroupMember();
-            groupMember.setUserId(user.getId());
+ //todo 修改liguiqin           groupMember.setUserId(user.getId());
             groupMember.setGroup(group);
             groupMemberSer.save(groupMember);
         }

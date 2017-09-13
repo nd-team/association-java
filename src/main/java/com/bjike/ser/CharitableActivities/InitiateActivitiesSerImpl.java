@@ -92,7 +92,7 @@ public class InitiateActivitiesSerImpl extends ServiceImpl<InitiateActivities, I
 
             //创建群聊
             Group group = new Group();
-            group.setUserId(user.getId());
+           //todo 修改 liguiqin  group.setUserId(user.getId());
             group.setName(to.getActivitySubject());
             group.setHeadPath(user.getHeadPath());
             groupSer.save(group);
