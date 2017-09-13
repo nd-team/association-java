@@ -134,6 +134,9 @@ public class MessageImpl extends ServiceImpl<Message, MessageDTO> implements Mes
         Message message = BeanCopy.copyProperties(messageTO, Message.class, true);
         super.save(message); //保存消息到数据库
         if (rangeType.equals(RangeType.SPECIFIED)) { //保存个人消息
+            if(null==userIds){
+                userIds = userSer.findIdByMail(receivers);
+            }
             savePersonalMsg(userIds, message);//保存并等待推送
         } else { //保存公共消息到缓存
             messageTO.setReceivers(userIds);
@@ -154,6 +157,7 @@ public class MessageImpl extends ServiceImpl<Message, MessageDTO> implements Mes
         }
 
     }
+
 
 
     @Override
@@ -312,6 +316,7 @@ public class MessageImpl extends ServiceImpl<Message, MessageDTO> implements Mes
         String[] rs = new String[list.size()];
         return list.toArray(rs);
     }
+
 
 
 }

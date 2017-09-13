@@ -22,13 +22,13 @@ public class Friend extends BaseEntity {
      * 归属人
      */
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", unique = true, columnDefinition = "VARCHAR(36) COMMENT '用户id' ", nullable = false)
+    @JoinColumn(name = "user_id",  columnDefinition = "VARCHAR(36) COMMENT '用户id' ", nullable = false)
     private User user;
     /**
      * 朋友id
      */
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "friend_id", unique = true, columnDefinition = "VARCHAR(36) COMMENT '朋友id' ", nullable = false)
+    @JoinColumn(name = "friend_id", columnDefinition = "VARCHAR(36) COMMENT '朋友id' ", nullable = false)
     private User friend;
 
     /**
