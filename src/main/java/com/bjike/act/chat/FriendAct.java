@@ -46,6 +46,7 @@ public class FriendAct {
     @GetMapping("list")
     public Result list() throws ActException {
         try {
+
             String userId = UserUtil.currentUserID();
             return ActResult.initialize(friendSer.list(userId));
         } catch (SerException e) {

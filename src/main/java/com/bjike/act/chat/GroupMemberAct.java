@@ -35,9 +35,9 @@ public class GroupMemberAct {
      * @version v1
      */
     @PostMapping("add/to/{groupId}")
-    public Result add( String[] userId, @PathVariable String groupId) throws ActException {
+    public Result add(String[] userId, @PathVariable String groupId) throws ActException {
         try {
-            groupMemberSer.add( groupId,userId);
+            groupMemberSer.add(groupId, userId);
             return ActResult.initialize("add success");
         } catch (SerException e) {
             throw new ActException(e.getMessage());
@@ -53,12 +53,30 @@ public class GroupMemberAct {
      * @version v1
      */
     @DeleteMapping("delete/by/{groupId}")
-    public Result del( String userId[], @PathVariable String groupId) throws ActException {
+    public Result del(String userId[], @PathVariable String groupId) throws ActException {
         try {
-            groupMemberSer.del( groupId,userId);
+            groupMemberSer.del(groupId, userId);
             return ActResult.initialize("del success");
         } catch (SerException e) {
             throw new ActException(e.getMessage());
         }
     }
+
+    /**
+     * 退出群
+     *
+     * @param groupId 群id
+     * @throws ActException
+     * @version v1
+     */
+    @PutMapping("quit/{groupId}")
+    public Result quit(@PathVariable String groupId) throws ActException {
+        try {
+            groupMemberSer.quit(groupId);
+            return ActResult.initialize("quit success");
+        } catch (SerException e) {
+            throw new ActException(e.getMessage());
+        }
+    }
+
 }

@@ -53,6 +53,7 @@ dependencies {
         exclude group: 'org.slf4j', module: 'slf4j-log4j12'
     }
     testCompile(group: 'com.ibeetl', name: 'beetl', version: "$beetl_version")
+    testCompile(group: 'cglib', name: 'cglib-nodep', version: '3.2.5')
     testCompile('org.springframework.boot:spring-boot-starter-test')
 
     compile('org.springframework.boot:spring-boot-starter-web')

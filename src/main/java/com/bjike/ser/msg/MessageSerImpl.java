@@ -41,7 +41,7 @@ import java.util.List;
  * @Copy: [ com.bjike ]
  */
 @Service
-public class MessageImpl extends ServiceImpl<Message, MessageDTO> implements MessageSer {
+public class MessageSerImpl extends ServiceImpl<Message, MessageDTO> implements MessageSer {
     @Autowired
     private UserSer userSer;
     @Autowired

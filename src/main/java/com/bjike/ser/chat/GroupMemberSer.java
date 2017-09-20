@@ -33,4 +33,15 @@ public interface GroupMemberSer extends Ser<GroupMember, GroupMemberDTO> {
     default void del(String groupId ,String[] userId) throws SerException {
 
     }
+
+    /**
+     * 退出群
+     * @param groupId 群id
+     * @throws SerException
+     */
+    default void quit(String groupId) throws SerException {
+
+    }
+
+
 }

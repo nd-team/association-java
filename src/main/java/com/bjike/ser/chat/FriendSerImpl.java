@@ -178,16 +178,25 @@ public class FriendSerImpl extends ServiceImpl<Friend, FriendDTO> implements Fri
                 " and a.user_id='" + userId + "' " +
                 " order by a.friend_group_id desc)a  where a.id is not null";
         List<FriendVO> friendVOS = super.findBySql(sql, FriendVO.class, new String[]{"id", "nickname", "remark", "headPath", "friendGroupId", "applyType"});
-        return friendVOS;
+        initOnLine(friendVOS);
+        return  friendVOS;
     }
 
     @Override
     public List<FriendVO> groupMember(String groupId) throws SerException {
         String sql = "select *  from(select c.id ,c.nickname,b.remark,c.head_path as headPath,a.id as groupId from " +
                 "chat_group a left join chat_friend b on a.user_id=b.user_id and b.apply_type=1 and a.id='" + groupId + "'" +
-                "left join user c on c.id=b.user_id )a";
+                "left join user c on c.id=b.user_id )a where id is not null";
         List<FriendVO> friendVOS = super.findBySql(sql, FriendVO.class, new String[]{"id", "nickname", "remark", "headPath", "groupId"});
-        return friendVOS;
+        initOnLine(friendVOS);
+        User user = UserUtil.currentUser();
+        FriendVO vo = new FriendVO();
+        vo.setApplyType(ApplyType.PASS);
+        vo.setNickname(user.getNickname());
+        vo.setHeadPath(user.getHeadPath());
+        vo.setId(user.getId());
+        friendVOS.add(vo);
+        return  friendVOS;
     }
 
     @Override
@@ -196,7 +205,16 @@ public class FriendSerImpl extends ServiceImpl<Friend, FriendDTO> implements Fri
                 " chat_friend_group a left join chat_friend b on a.user_id=b.user_id and b.apply_type=1 " +
                 " left join user c on c.id=b.user_id )a where a.friendGroupId" +
                 "='" + id + "'";
-        return super.findBySql(sql, FriendVO.class, new String[]{"nickname", "remark", "headPath", "friendGroupId"});
+        List<FriendVO> friendVOS = super.findBySql(sql, FriendVO.class, new String[]{"nickname", "remark", "headPath", "friendGroupId"});
+        initOnLine(friendVOS);
+        return  friendVOS;
 
+    }
+
+    private void initOnLine(List<FriendVO> friendVOS){
+        for (FriendVO vo : friendVOS) {
+            Client client = ChatSession.get(vo.getId());
+            vo.setOnline((null != client && client.getSession().isOpen()));
+        }
     }
 }

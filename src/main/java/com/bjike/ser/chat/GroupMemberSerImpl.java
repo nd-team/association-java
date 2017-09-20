@@ -76,5 +76,16 @@ public class GroupMemberSerImpl extends ServiceImpl<GroupMember, GroupMemberDTO>
         }
     }
 
-
+    @Override
+    public void quit(String groupId) throws SerException {
+        GroupMemberDTO dto = new GroupMemberDTO();
+        dto.getConditions().add(Restrict.eq("group.id", groupId));
+        dto.getConditions().add(Restrict.in("user.id", UserUtil.currentUserID()));
+        GroupMember member = super.findOne(dto);
+        if (null != member) {
+            super.remove(member);
+        } else {
+            throw new SerException("对不起， 你不在该群组");
+        }
+    }
 }
