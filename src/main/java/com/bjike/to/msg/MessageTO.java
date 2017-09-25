@@ -77,19 +77,19 @@ public class MessageTO extends BaseTO {
     private String[] groups;
 
 
-    private Map<String, String> imgMap = null;
+    private Map<String, String> imgMap ;
     /**
      * 发送附件地址(邮件)
      */
-    private List<String> appendixPath = null;
+    private List<String> appendixPath ;
     /**
      * 抄送人人(邮件)
      */
-    private List<String> cc_address = null;
+    private List<String> ccAddress ;
     /**
      * 密送人(邮件)
      */
-    private List<String> bcc_address = null;
+    private List<String> bccAddress;
 
 
     public String getTitle() {
@@ -181,19 +181,19 @@ public class MessageTO extends BaseTO {
         this.appendixPath = appendixPath;
     }
 
-    public List<String> getCc_address() {
-        return cc_address;
+    public List<String> getCcAddress() {
+        return ccAddress;
     }
 
-    public void setCc_address(List<String> cc_address) {
-        this.cc_address = cc_address;
+    public void setCcAddress(List<String> ccAddress) {
+        this.ccAddress = ccAddress;
     }
 
-    public List<String> getBcc_address() {
-        return bcc_address;
+    public List<String> getBccAddress() {
+        return bccAddress;
     }
 
-    public void setBcc_address(List<String> bcc_address) {
-        this.bcc_address = bcc_address;
+    public void setBccAddress(List<String> bccAddress) {
+        this.bccAddress = bccAddress;
     }
 }

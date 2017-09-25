@@ -1,7 +1,6 @@
 package com.bjike.act.msg;
 
 
-import com.bjike.common.aspect.ADD;
 import com.bjike.common.aspect.EDIT;
 import com.bjike.common.exception.ActException;
 import com.bjike.common.exception.SerException;
@@ -85,7 +84,7 @@ public class MessageAct {
      * @version v1
      */
     @GetMapping("list/unread")
-    public Result unreadMessages( MsgType msgType, HttpServletRequest request) throws ActException {
+    public Result unreadMessages(MsgType msgType, HttpServletRequest request) throws ActException {
         try {
             String userId = UserUtil.currentUserID();
             List<Message> messages = messageSer.unreadList(userId, msgType);
@@ -96,22 +95,22 @@ public class MessageAct {
         }
     }
 
-//    /**
-//     * 消息修改
-//     *
-//     * @param messageTO 消息体
-//     * @throws ActException
-//     * @version v1
-//     */
-//    @PutMapping("edit")
-//    public Result edit(@Validated(EDIT.class) MessageTO messageTO, BindingResult result) throws ActException {
-//        try {
-//            messageSer.edit(messageTO);
-//            return new ActResult("edit success");
-//        } catch (SerException e) {
-//            throw new ActException(e.getMessage());
-//        }
-//    }
+    /**
+     * 消息修改
+     *
+     * @param messageTO 消息体
+     * @throws ActException
+     * @version v1
+     */
+    @PutMapping("edit")
+    public Result edit(@Validated(EDIT.class) MessageTO messageTO, BindingResult result) throws ActException {
+        try {
+            messageSer.edit(messageTO);
+            return new ActResult("edit success");
+        } catch (SerException e) {
+            throw new ActException(e.getMessage());
+        }
+    }
 
     /**
      * 消息删除
