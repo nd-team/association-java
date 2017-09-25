@@ -8,10 +8,10 @@ import com.bjike.entity.${package}.${clazz};
 /**
  * ${des}业务操作实现
  *
- * @Author:	[ ${author} ]
- * @Date: [  ${date(),dateFormat="yyyy-MM-dd HH:mm:ss"} ]
- * @Description: [ ${des} ]
- * @Version: [ v1.0.0 ]
+ * @Author:	[${author}]
+ * @Date: [${date(),dateFormat="yyyy-MM-dd HH:mm:ss"}]
+ * @Description: [${des}]
+ * @Version: [v1.0.0]
  * @Copy: [com.bjike]
  */
  @Service

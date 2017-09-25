@@ -10,10 +10,10 @@ import org.hibernate.validator.constraints.NotBlank;
 /**
  * 订单评价添加更新操作对象
  *
- * @Author: [ liguiqin ]
- * @Date: [  2017-09-06 14:50:50 ]
- * @Description: [ 订单评价 ]
- * @Version: [ v1.0.0 ]
+ * @Author: [liguiqin]
+ * @Date: [2017-07-19 13:58]
+ * @Description: [ ]
+ * @Version: [1.0.0]
  * @Copy: [com.bjike]
  */
 public class EvaluateTO extends BaseTO {

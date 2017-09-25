@@ -11,7 +11,7 @@ import java.time.LocalDate;
  * 司机传输实体
  *
  * @Author: [liguiqin]
- * @Date: [2017-09-02 15:12]
+ * @Date: [2017-07-19 13:58]
  * @Description: [ ]
  * @Version: [1.0.0]
  * @Copy: [com.bjike]

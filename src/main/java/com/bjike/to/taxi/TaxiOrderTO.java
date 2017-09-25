@@ -1,7 +1,5 @@
 package com.bjike.to.taxi;
 
-import com.bjike.common.aspect.ADD;
-import com.bjike.common.aspect.EDIT;
 import com.bjike.to.BaseTO;
 import com.bjike.type.taxi.OrderStatus;
 import org.hibernate.validator.constraints.NotBlank;
@@ -10,15 +8,15 @@ import org.hibernate.validator.constraints.NotBlank;
 /**
  * 叫车订单 添加更新操作对象
  *
- * @Author: [ liguiqin ]
- * @Date: [  2017-09-02 17:50:09 ]
- * @Description: [ 叫车订单 ]
- * @Version: [ v1.0.0 ]
+ * @Author: [liguiqin]
+ * @Date: [2017-07-19 13:58]
+ * @Description: [ ]
+ * @Version: [1.0.0]
  * @Copy: [com.bjike]
  */
 public class TaxiOrderTO extends BaseTO {
 
-    public interface PUBLISH{
+    public interface PUBLISH {
 
     }
 

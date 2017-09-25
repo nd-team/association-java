@@ -6,10 +6,10 @@ import com.bjike.to.BaseTO;
 /**
  * ${des}添加更新操作对象
  *
- * @Author:	[ ${author} ]
- * @Date: [  ${date(),dateFormat="yyyy-MM-dd HH:mm:ss"} ]
- * @Description: [ ${des} ]
- * @Version: [ v1.0.0 ]
+ * @Author:	[${author}]
+ * @Date: [${date(),dateFormat="yyyy-MM-dd HH:mm:ss"}]
+ * @Description: [${des}]
+ * @Version: [v1.0.0]
  * @Copy: [com.bjike]
  */
 public class ${clazz}TO extends BaseTO {

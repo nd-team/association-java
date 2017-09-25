@@ -7,10 +7,10 @@ import com.bjike.entity.${package}.${clazz};
 /**
  * ${des}持久化接口
  *
- * @Author:	[ ${author} ]
- * @Date: [  ${date(),dateFormat="yyyy-MM-dd HH:mm:ss"} ]
- * @Description: [ ${des} ]
- * @Version: [ v1.0.0 ]
+ * @Author:	[${author}]
+ * @Date: [${date(),dateFormat="yyyy-MM-dd HH:mm:ss"}]
+ * @Description: [${des}]
+ * @Version: [v1.0.0]
  * @Copy: [com.bjike]
  */
 public interface ${clazz}Rep extends JpaRep<${clazz}, ${clazz}DTO> {

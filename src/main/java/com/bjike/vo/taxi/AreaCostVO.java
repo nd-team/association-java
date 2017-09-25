@@ -6,10 +6,10 @@ import com.bjike.vo.BaseVO;
 /**
  * 地区费用值对象
  *
- * @Author:	[ liguiqin ]
- * @Date: [  2017-09-05 10:30:15 ]
- * @Description: [ 地区费用 ]
- * @Version: [ v1.0.0 ]
+ * @Author: [liguiqin]
+ * @Date: [2017-07-19 13:58]
+ * @Description: [ ]
+ * @Version: [1.0.0]
  * @Copy: [com.bjike]
  */
 public class AreaCostVO extends BaseVO {

@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 /**
  * ${des}
  *
- * @Author:	[ ${author} ]
- * @Date: [  ${date(),dateFormat="yyyy-MM-dd HH:mm:ss"} ]
- * @Description: [ ${des} ]
- * @Version: [ v1.0.0 ]
+ * @Author:	[${author}]
+ * @Date: [${date(),dateFormat="yyyy-MM-dd HH:mm:ss"}]
+ * @Description: [${des}]
+ * @Version: [v1.0.0]
  * @Copy: [com.bjike]
  */
 

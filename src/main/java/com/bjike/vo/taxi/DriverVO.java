@@ -6,10 +6,10 @@ import com.bjike.vo.BaseVO;
 /**
  * 申请司机信息
  *
- * @Author: [ liguiqin ]
- * @Date: [  2017-09-02 15:13:45 ]
- * @Description: [ 申请司机信息 ]
- * @Version: [ v1.0.0 ]
+ * @Author: [liguiqin]
+ * @Date: [2017-07-19 13:58]
+ * @Description: [ ]
+ * @Version: [1.0.0]
  * @Copy: [com.bjike]
  */
 public class DriverVO extends BaseVO {

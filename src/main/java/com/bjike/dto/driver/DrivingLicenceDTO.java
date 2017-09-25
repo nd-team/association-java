@@ -6,10 +6,10 @@ import java.io.Serializable;
 /**
  * 测试实体查询传输对象
  *
- * @Author:	[ liguiqin ]
- * @Date: [  2017-09-02 15:10:31 ]
- * @Description: [ 测试实体 ]
- * @Version: [ v1.0.0 ]
+ * @Author: [liguiqin]
+ * @Date: [2017-07-19 13:58]
+ * @Description: [ ]
+ * @Version: [1.0.0]
  * @Copy: [com.bjike]
  */
 public class DrivingLicenceDTO extends BaseDTO {
