@@ -9,12 +9,13 @@ import com.bjike.entity.user.LoginLog;
 import com.bjike.ser.user.LoginLogSer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 /**
+ * 登录日志
+ *
  * @Author: [liguiqin]
  * @Date: [2017-09-13 09:19]
  * @Description: [ ]
@@ -27,6 +28,13 @@ public class LoginLogAct {
     @Autowired
     private LoginLogSer loginLogSer;
 
+    /**
+     * 登录日志
+     *
+     * @return class LoginLog
+     * @throws ActException
+     * @version v1
+     */
     @GetMapping("login/log")
     public ActResult sign() throws ActException {
         try {

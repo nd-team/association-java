@@ -96,22 +96,22 @@ public class MessageAct {
         }
     }
 
-    /**
-     * 消息修改
-     *
-     * @param messageTO 消息体
-     * @throws ActException
-     * @version v1
-     */
-    @PutMapping("edit")
-    public Result edit(@Validated(EDIT.class) MessageTO messageTO, BindingResult result) throws ActException {
-        try {
-            messageSer.edit(messageTO);
-            return new ActResult("edit success");
-        } catch (SerException e) {
-            throw new ActException(e.getMessage());
-        }
-    }
+//    /**
+//     * 消息修改
+//     *
+//     * @param messageTO 消息体
+//     * @throws ActException
+//     * @version v1
+//     */
+//    @PutMapping("edit")
+//    public Result edit(@Validated(EDIT.class) MessageTO messageTO, BindingResult result) throws ActException {
+//        try {
+//            messageSer.edit(messageTO);
+//            return new ActResult("edit success");
+//        } catch (SerException e) {
+//            throw new ActException(e.getMessage());
+//        }
+//    }
 
     /**
      * 消息删除
