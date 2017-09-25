@@ -53,7 +53,7 @@ public class GroupMemberAct {
      * @version v1
      */
     @DeleteMapping("delete/by/{groupId}")
-    public Result del(String userId[], @PathVariable String groupId) throws ActException {
+    public Result del(String[] userId, @PathVariable String groupId) throws ActException {
         try {
             groupMemberSer.del(groupId, userId);
             return ActResult.initialize("del success");

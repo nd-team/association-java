@@ -56,7 +56,14 @@ public class EvaluateAct {
             throw new ActException(e.getMessage());
         }
     }
-
+    /**
+     * 未完成订单评价
+     *
+     * @param orderId 订单id
+     * @param content 订单內容
+     * @return {name:'data',type:'boolean',defaultValue:'',description:'true/false.'}
+     * @version v1
+     */
     @PostMapping("unfinished/{orderId}")
     public Result unfinished(@PathVariable String orderId,String content) throws ActException {
         try {

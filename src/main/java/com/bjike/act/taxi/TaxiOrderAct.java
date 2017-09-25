@@ -127,8 +127,6 @@ public class TaxiOrderAct {
         }
     }
 
-    ;
-
     /**
      * 预测费用
      *

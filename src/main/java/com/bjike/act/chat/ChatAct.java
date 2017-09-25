@@ -87,11 +87,10 @@ public class ChatAct {
     }
 
     /**
-     * 退出语音聊天
      *
-     * @param userId 用户id
+     * @param userId 退出語音聊天
+     * @return
      * @throws ActException
-     * @version v1
      */
     @GetMapping("quit/audio/{userId}")
     public Result quitAudio(@PathVariable String userId) throws ActException {
