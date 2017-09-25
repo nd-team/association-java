@@ -34,6 +34,7 @@ public class SearchAct {
      * @param id id
      * @return class SearchUserVO
      * @throws ActException
+     * @version v1
      */
     @GetMapping("/agree/{id}")
     public Result agree(@PathVariable String id) throws ActException {
@@ -47,7 +48,7 @@ public class SearchAct {
 
     /**
      * 搜索
-     *
+     *@version v1
      * @param name 搜索关键字
      * @return class FindVO
      * @throws ActException

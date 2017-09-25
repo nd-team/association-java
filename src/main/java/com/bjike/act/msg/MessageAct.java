@@ -40,59 +40,6 @@ public class MessageAct {
     @Autowired
     private MessageSer messageSer;
 
-    /**
-     * 发送邮件
-     *
-     * @param messageTO 消息体
-     * @throws ActException
-     * @des 默认为个人邮件(SPECIFIED), 指定PUB则发送所有人员
-     * @version v1
-     */
-    @PostMapping("send/mail")
-    public Result send(@Validated(ADD.class) MessageTO messageTO, BindingResult result) throws ActException {
-        try {
-            messageSer.sendMail(messageTO);
-            return new ActResult("send message success!");
-        } catch (SerException e) {
-            throw new ActException(e.getMessage());
-        }
-    }
-
-    /**
-     * 推送消息
-     *
-     * @param messageTO 消息体
-     * @throws ActException
-     * @des 默认为个人邮件(SPECIFIED), 指定PUB则发送所有人员
-     * @version v1
-     */
-    @PostMapping("push")
-    public Result push(@Validated(ADD.class) MessageTO messageTO, BindingResult result) throws ActException {
-        try {
-            messageSer.pushMsg(messageTO);
-            return new ActResult("push message success!");
-        } catch (SerException e) {
-            throw new ActException(e.getMessage());
-        }
-    }
-
-    /**
-     * 推送消息
-     *
-     * @param messageTO 消息体
-     * @throws ActException
-     * @des 默认为个人邮件(SPECIFIED), 指定PUB则发送所有人员
-     * @version v1
-     */
-    @PostMapping("msgAndMail")
-    public Result msgAndMail(@Validated(ADD.class) MessageTO messageTO, BindingResult result) throws ActException {
-        try {
-            messageSer.pushAndMail(messageTO);
-            return new ActResult("msgAndMail  success!");
-        } catch (SerException e) {
-            throw new ActException(e.getMessage());
-        }
-    }
 
     /**
      * 读取消息

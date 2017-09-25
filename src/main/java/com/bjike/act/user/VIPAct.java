@@ -24,15 +24,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping
 public class VIPAct {
+    @Autowired
+    private UserSer userSer;
+
     /**
      * vip申请
      *
      * @return {name:'data',type:'boolean',defaultValue:'',description:'true/false.'}
      * @version v1
      */
-    @Autowired
-    private UserSer userSer;
-
     @PostMapping("vip/apply")
     public ActResult apply(VIPApplyTO to) throws ActException {
         try {
