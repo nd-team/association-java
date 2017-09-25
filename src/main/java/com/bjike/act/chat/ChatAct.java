@@ -86,10 +86,9 @@ public class ChatAct {
         return new ActResult("audio is over");
     }
 
-    /**
-     *
+    /**退出語音聊天
+     *  @version v1
      * @param userId 退出語音聊天
-     * @return
      * @throws ActException
      */
     @GetMapping("quit/audio/{userId}")
