@@ -105,7 +105,7 @@ public class ChatAct {
      * @version v1
      */
     @PostMapping("file/upload")
-    public Result quitAudio(HttpServletRequest request) throws ActException {
+    public Result upload(HttpServletRequest request) throws ActException {
         try {
             String userId = UserUtil.currentUserID();
             List<File> files = FileUtil.save(request, "/" + userId + "/chat/file");

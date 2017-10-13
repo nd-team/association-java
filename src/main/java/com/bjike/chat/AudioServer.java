@@ -7,6 +7,7 @@ import com.bjike.entity.chat.Client;
 import com.bjike.session.AudioClientSession;
 import com.bjike.session.AudioSession;
 import com.bjike.session.ChatSession;
+import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
@@ -20,6 +21,8 @@ import java.util.Map;
  *
  * @author liguiqin
  */
+@ServerEndpoint(value = "/audio/{userId}", configurator = GetHttpSessionConfigurator.class) //开启语音服务
+@Component
 public class AudioServer {
 
     /**

@@ -5,7 +5,7 @@ import org.springframework.web.context.request.RequestContextListener;
 import javax.servlet.annotation.WebListener;
 
 /**
- * request监听器
+ * request监听器(可在当前线程获取当前的request)
  * @Author: [liguiqin]
  * @Date: [2017-08-24 09:10]
  * @Description: [ ]
